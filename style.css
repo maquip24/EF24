@@ -1,0 +1,613 @@
+# LOS MOSQUETEROS DE LA FORMACIÓN
+
+## Pack de HTML Inmersivo para Juego QR
+
+Este documento contiene la estructura completa de las páginas HTML para el juego inmersivo de formación scout inspirado en Los Tres Mosqueteros.
+
+---
+
+# EXPERIENCIA GENERAL
+
+## Estética
+
+* Fondo oscuro cinematográfico.
+* Pergaminos antiguos.
+* Animaciones suaves.
+* Sonidos de espada y fuego.
+* Tipografía medieval.
+* Sensación de misión secreta.
+
+## Recomendación técnica
+
+Subir todos los archivos a:
+
+* GitHub Pages
+* Netlify
+
+---
+
+# ESTRUCTURA DE ARCHIVOS
+
+```txt
+/index.html
+/athos.html
+/porthos.html
+/aramis.html
+/dartagnan.html
+/final.html
+/style.css
+/script.js
+/sounds/
+/images/
+```
+
+---
+
+# style.css
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=MedievalSharp&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
+        url('https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1600');
+    background-size: cover;
+    background-position: center;
+    color: #f3e7c9;
+    font-family: 'Cinzel', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    background: rgba(10,10,10,0.85);
+    border: 3px solid #c8a95b;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 1.5s ease;
+}
+
+h1 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 3rem;
+    text-align: center;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #f1d28a;
+}
+
+p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.quote {
+    border-left: 4px solid #d4af37;
+    padding-left: 20px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #e8d9aa;
+}
+
+button {
+    display: block;
+    margin: 30px auto;
+    background: linear-gradient(135deg, #8b0000, #c8a95b);
+    border: none;
+    padding: 15px 30px;
+    color: white;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(212,175,55,0.5);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #d4af37;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+.result {
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    background: rgba(212,175,55,0.1);
+    display: none;
+}
+
+.timer {
+    text-align: center;
+    font-size: 2rem;
+    color: #ffcc66;
+    margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+```
+
+---
+
+# script.js
+
+```javascript
+function reveal(id){
+    document.getElementById(id).style.display = 'block';
+}
+
+let time = 40 * 60;
+
+function startTimer(){
+    const timerElement = document.getElementById('timer');
+
+    setInterval(() => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+
+        timerElement.innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if(time > 0){
+            time--;
+        }
+    },1000);
+}
+```
+
+---
+
+# index.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Mosqueteros de la Formación</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload="startTimer()">
+
+<div class="container">
+
+<div class="timer" id="timer"></div>
+
+<h1>⚔ LOS MOSQUETEROS DE LA FORMACIÓN ⚔</h1>
+
+<h2>La Academia Real de la Escuela Carlos Quiroga</h2>
+
+<p>
+Durante años el reino scout ha sobrevivido gracias a líderes valientes...
+pero las sombras crecen.
+
+Muchos desean dirigir.
+Pocos aceptan formarse.
+</p>
+
+<div class="quote">
+“Solo quienes superen las pruebas de Athos, Porthos, Aramis y D’Artagnan
+podrán portar la espada del verdadero formador.”
+</div>
+
+<p>
+Los códigos han sido escondidos.
+El tiempo corre.
+
+Cada misión revelará un sello.
+Cada sello revelará el verdadero propósito del servicio.
+</p>
+
+<button onclick="window.location.href='athos.html'">
+INICIAR MISIÓN
+</button>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+# athos.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ATHOS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>⚜ ATHOS ⚜</h1>
+
+<h2>El Honor del Formador</h2>
+
+<div class="quote">
+“Un líder sin principios es más peligroso que una espada sin control.”
+</div>
+
+<p>
+Athos protegía el reino con sabiduría.
+
+Ahora deberás responder:
+</p>
+
+<p>
+¿Qué adulto scout dejó una huella en tu vida y por qué?
+</p>
+
+<textarea rows="6"></textarea>
+
+<button onclick="reveal('resultado')">
+ENTREGAR RESPUESTA
+</button>
+
+<div class="result" id="resultado">
+<h2>SELLO OBTENIDO</h2>
+
+<p>
+⚜ HONOR ⚜
+</p>
+
+<p>
+La huella de un adulto preparado puede cambiar la historia de un joven.
+</p>
+
+<p>
+La siguiente pista está donde las voces del reino se amplifican.
+</p>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+# porthos.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>PORTHOS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>🛡 PORTHOS 🛡</h1>
+
+<h2>La Fuerza del Servicio</h2>
+
+<div class="quote">
+“La voluntad sin preparación puede destruir aquello que intenta proteger.”
+</div>
+
+<p>
+Un joven entra en crisis emocional durante un campamento.
+
+¿Qué harías?
+</p>
+
+<button onclick="reveal('correcta')">
+Escuchar y buscar apoyo adecuado
+</button>
+
+<button onclick="reveal('incorrecta')">
+Ignorarlo hasta que se calme
+</button>
+
+<div class="result" id="correcta">
+<h2>⚜ RESPUESTA DIGNA ⚜</h2>
+
+<p>
+El servicio requiere preparación.
+
+Nadie improvisa el cuidado de otros.
+</p>
+
+<p>
+Has obtenido el sello:
+🛡 SERVICIO 🛡
+</p>
+</div>
+
+<div class="result" id="incorrecta">
+<h2>⚠ EL REINO HA FALLADO ⚠</h2>
+
+<p>
+La improvisación pone en riesgo a quienes confían en nosotros.
+</p>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+# aramis.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ARAMIS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>📜 ARAMIS 📜</h1>
+
+<h2>La Sabiduría del Camino</h2>
+
+<div class="quote">
+“Quien deja de aprender, deja de liderar.”
+</div>
+
+<p>
+Descifra el mensaje oculto:
+</p>
+
+<h2>
+R O F M A R S E E S S E R V I R M E J O R
+</h2>
+
+<input type="text" placeholder="Escribe el mensaje oculto">
+
+<button onclick="reveal('mensaje')">
+DESCIFRAR
+</button>
+
+<div class="result" id="mensaje">
+<h2>⚜ SABIDURÍA OBTENIDA ⚜</h2>
+
+<p>
+“FORMARSE ES SERVIR MEJOR”
+</p>
+
+<p>
+La verdadera espada del dirigente es el conocimiento.
+</p>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+# dartagnan.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>D'Artagnan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>⚔ D'ARTAGNAN ⚔</h1>
+
+<h2>El Coraje del Compromiso</h2>
+
+<div class="quote">
+“Uno para todos y todos para uno.”
+</div>
+
+<p>
+La última prueba requiere unidad.
+</p>
+
+<p>
+Formen una figura humana que represente:
+
+LA HERMANDAD DEL SERVICIO.
+</p>
+
+<p>
+Cuando un guardián valide su misión,
+continúen hacia el salón final.
+</p>
+
+<button onclick="window.location.href='final.html'">
+HEMOS COMPLETADO LA MISIÓN
+</button>
+
+</div>
+
+</body>
+</html>
+```
+
+---
+
+# final.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Final</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>⚜ EL SALÓN REAL ⚜</h1>
+
+<h2>La Orden de los Formadores</h2>
+
+<p>
+Han reunido los sellos de:
+</p>
+
+<ul>
+<li>Honor</li>
+<li>Servicio</li>
+<li>Sabiduría</li>
+<li>Compromiso</li>
+</ul>
+
+<div class="quote">
+“No existe liderazgo verdadero sin formación verdadera.”
+</div>
+
+<p>
+Hoy no han ganado un juego.
+
+Han aceptado una responsabilidad.
+</p>
+
+<h2>
+⚔ JURAMENTO MOSQUETERO ⚔
+</h2>
+
+<p>
+Prometo aprender para servir mejor.
+
+Prometo prepararme para cuidar a otros.
+
+Prometo construir un escultismo más fuerte.
+
+Y entregar mis capacidades al crecimiento de quienes confían en mí.
+</p>
+
+<button>
+ACEPTO EL COMPROMISO
+</button>
+
+<h1>
+⚜ BIENVENIDOS A LA ESCUELA DE FORMACIÓN CARLOS QUIROGA ⚜
+</h1>
+
+</div>
+
+</body>
+</html>
+```
+
+---
+
+# IDEAS AVANZADAS PARA VOLVERLO ÉPICO
+
+## EFECTOS
+
+Agregar:
+
+* humo animado,
+* sonidos de espadas,
+* partículas,
+* lluvia,
+* fuego,
+* pergaminos que se despliegan.
+
+Puedes usar:
+
+* particles.js
+* animate.css
+* GSAP
+
+---
+
+# SONIDOS
+
+Agregar audios:
+
+* espadas chocando,
+* puertas medievales,
+* fuego,
+* tambores.
+
+---
+
+# EXPERIENCIA FINAL
+
+Cuando presionen:
+“ACEPTO EL COMPROMISO”
+
+puede:
+
+* sonar una fanfarria,
+* aparecer fuego dorado,
+* mostrar sus nombres,
+* revelar el escudo de la escuela.
+
+---
+
+# RECOMENDACIÓN FINAL
+
+NO pongas los QR visibles.
+
+Haz que:
+
+* estén escondidos,
+* sellados,
+* enterrados,
+* colgados,
+* protegidos por personajes.
+
+La experiencia debe sentirse como:
+
+⚔ una misión secreta ⚔
