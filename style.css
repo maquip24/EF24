@@ -1,4 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=MedievalSharp&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
+        url('https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?q=80&w=1600');
+    background-size: cover;
+    background-position: center;
+    color: #f3e7c9;
+    font-family: 'Cinzel', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    background: rgba(10,10,10,0.85);
+    border: 3px solid #c8a95b;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 1.5s ease;
+}
+
+h1 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 3rem;
+    text-align: center;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #f1d28a;
+}
+
+p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.quote {
+    border-left: 4px solid #d4af37;
+    padding-left: 20px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #e8d9aa;
 }
 
 button {
@@ -6,34 +59,6 @@ button {
     margin: 30px auto;
     background: linear-gradient(135deg, #8b0000, #c8a95b);
     border: none;
-    padding: 15px 30px;
-    color: white;
-    font-size: 1rem;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Cinzel', serif;
-}
-
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(212,175,55,0.5);
-}
-
-input, textarea {
-    width: 100%;
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #d4af37;
-    background: rgba(255,255,255,0.08);
-    color: white;
-    margin-top: 15px;
-    font-size: 1rem;
-}
-
-.result {
-    margin-top: 30px;
-    padding: 20px;
     border: 2px solid #d4af37;
     border-radius: 12px;
     background: rgba(212,175,55,0.1);
