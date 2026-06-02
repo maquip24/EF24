@@ -1,55 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSM24 | Misiones de Formación</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="dashboard">
-        <header>
-            <h1>CENTRO DE MANDO GSM24</h1>
-            <p>Estado de las Misiones de Formación</p>
-        </header>
+<script>
+    const missions = ['m1', 'm2', 'm3', 'm4'];
+    
+    missions.forEach(m => {
+        const card = document.getElementById('card-' + m);
+        const status = card.querySelector('.status');
+        
+        if(localStorage.getItem(m) === 'true') {
+            card.classList.add('completed');
+            status.innerHTML = 'COMPLETADO <span style="color:var(--neon-green)">✓</span>';
+        }
+    });
 
-        <div class="grid">
-            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'">
-                <h3>MISIÓN 1</h3>
-                <p>El Porqué</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'">
-                <h3>MISIÓN 2</h3>
-                <p>Fase 1</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'">
-                <h3>MISIÓN 3</h3>
-                <p>Fase 2</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'">
-                <h3>MISIÓN 4</h3>
-                <p>Fase 3</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-        </div>
-
-        <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
-            ACCEDER AL COMPROMISO FINAL (M5)
-        </button>
-    </div>
-
-    <script>
-        const missions = ['m1', 'm2', 'm3', 'm4'];
-        missions.forEach(m => {
-            if(localStorage.getItem(m)) {
-                document.getElementById('card-' + m).classList.add('completed');
-                document.getElementById('card-' + m).querySelector('.status').innerText = 'COMPLETADO';
-            }
-        });
-        if(missions.every(m => localStorage.getItem(m))) document.getElementById('final-btn').disabled = false;
-    </script>
-</body>
-</html>
+    if(missions.every(m => localStorage.getItem(m) === 'true')) {
+        const btn = document.getElementById('final-btn');
+        btn.disabled = false;
+        btn.style.background = 'var(--neon-cyan)';
+    }
+</script>
