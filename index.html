@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lanzamiento Escuela Carlos Quiroga</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <img src="image_b5c380.jpg" style="width:100%; border-radius:10px;">
+        <h1>Escuela Carlos Quiroga 2026</h1>
+        <div id="menu">
+            <button onclick="irA('momento1.html')">1. El Porqué</button>
+            <button id="btn2" onclick="irA('momento2.html')" disabled>2. Fase 1: Reencontrémonos</button>
+            <button id="btn3" onclick="irA('momento3.html')" disabled>3. Fase 2: Lo Básico</button>
+            <button id="btn4" onclick="irA('momento4.html')" disabled>4. Fase 3: Gobernanza</button>
+            <button id="btn5" onclick="irA('momento5.html')" disabled>5. El Compromiso</button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de desbloqueo basada en progreso
+        window.onload = () => {
+            if(localStorage.getItem('m1')) document.getElementById('btn2').disabled = false;
+            if(localStorage.getItem('m2')) document.getElementById('btn3').disabled = false;
+            if(localStorage.getItem('m3')) document.getElementById('btn4').disabled = false;
+            if(localStorage.getItem('m4')) document.getElementById('btn5').disabled = false;
+        };
+        function irA(url) { window.location.href = url; }
+    </script>
+</body>
+</html>
