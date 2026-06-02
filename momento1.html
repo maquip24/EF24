@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momento 1: El Origen - GSM24</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="image_b5c380.jpg" alt="Escuela Carlos Quiroga" class="responsive-img">
+        
+        <h1>El Porqué: Nuestra Identidad</h1>
+        
+        <p>La Escuela de Formación Carlos Quiroga es el eje principal para fortalecer la preparación y compromiso de nuestros adultos activos[cite: 23, 24].</p>
+        
+        <div class="capsula-historica">
+            <p><strong>El Legado:</strong> Honramos a Carlos Quiroga por sus 40 años de trayectoria, quien es nuestro modelo a seguir para garantizar un programa educativo de calidad[cite: 28].</p>
+        </div>
+
+        <h3>¿Estás listo para el desafío?</h3>
+        <button onclick="confirmarCompromiso()">He comprendido el legado</button>
+    </div>
+
+    <script>
+    function confirmarCompromiso() {
+        const datos = { momento: "Momento 1", status: "Completado" };
+        // Conexión con tu Apps Script
+        fetch("TU_URL_APPS_SCRIPT_AQUI", {
+            method: 'POST',
+            body: JSON.stringify(datos)
+        }).then(() => {
+            alert("¡Legado aceptado! Continuando hacia la Fase 1.");
+            window.location.href = 'momento2.html';
+        });
+    }
+    </script>
+</body>
+</html>
