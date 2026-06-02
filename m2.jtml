@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Misión 02 | Brújula Scout</title>
+    <style>
+        body { background: #050505; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; }
+        .card { border: 2px solid #3e8bff; padding: 40px; border-radius: 20px; text-align: center; background: #111; width: 80%; max-width: 400px; }
+        #brujula { font-size: 5rem; margin: 20px 0; display: inline-block; transition: transform 0.1s; color: #3e8bff; }
+        button { padding: 15px 30px; background: #3e8bff; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>MISIÓN 02</h2>
+        <p>Gira tu dispositivo hasta encontrar el Norte Scout:</p>
+        <div id="brujula">▲</div>
+        <p id="status">Buscando orientación...</p>
+        <button id="btnValidar" onclick="validar()" disabled>VALIDAR ORIENTACIÓN</button>
+        <br><br>
+        <a href="index.html" style="color:#555">Volver</a>
+    </div>
+
+    <script>
+        let orientada = false;
+
+        window.addEventListener("deviceorientation", (event) => {
+            const alpha = event.alpha; // Rotación en grados
+            const brujula = document.getElementById('brujula');
+            
+            // Rotamos visualmente el indicador
+            brujula.style.transform = `rotate(${alpha}deg)`;
+
+            // Si está cerca del Norte (0 o 360 grados), validamos
+            if (alpha > 350 || alpha < 10) {
+                document.getElementById('status').innerText = "¡NORTE ENCONTRADO!";
+                document.getElementById('btnValidar').disabled = false;
+                orientada = true;
+            }
+        });
+
+        function validar() {
+            if(orientada) {
+                localStorage.setItem('m2', 'true');
+                alert("¡Fase 1 completada!");
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
