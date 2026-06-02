@@ -2,51 +2,46 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 04 | Morse | GSM24</title>
+    <title>Misión 04 | Gobernanza | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .signal-display { background: #000; border: 1px solid #f3ff3e; height: 60px; margin: 20px 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #f3ff3e; border-radius: 10px; }
-        .morse-btn { width: 150px; height: 150px; border-radius: 50%; background: #222; border: 5px solid #f3ff3e; color: #f3ff3e; font-weight: bold; cursor: pointer; transition: 0.1s; }
-        .morse-btn:active { background: #333; transform: scale(0.95); }
+        .counter { font-size: 3rem; color: var(--neon-yellow); margin: 20px 0; }
+        .morse-btn { width: 150px; height: 150px; border-radius: 50%; background: #222; border: 5px solid var(--neon-yellow); color: var(--neon-yellow); font-size: 1.5rem; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card m4-theme">
             <h2>MISIÓN 04: GOBERNANZA</h2>
-            <p>Emite la señal <b>S</b> (...)</p>
-            <div class="signal-display" id="display">...</div>
-            <button class="morse-btn" id="transmitter">EMITIR</button>
-            <p id="feedback" style="font-size:0.8rem; color:#888;">Presiona corto (.) o largo (-)</p>
+            <p>Emite 3 señales cortas para la letra <b>S</b> (...)</p>
+            
+            <div class="counter" id="display">0 / 3</div>
+            
+            <button class="morse-btn" id="transmitter" onclick="registrarClic()">TAP</button>
+            
+            <br><br>
             <button id="btnValidar" onclick="validarMision()" disabled>VALIDAR GOBERNANZA</button>
+            <br>
+            <a href="index.html" style="color:#555; display:block; margin-top:20px;">Volver al Centro de Mando</a>
         </div>
     </div>
 
     <script>
-        const display = document.getElementById('display');
-        const btn = document.getElementById('btnValidar');
-        let signalBuffer = "";
-        let startTime;
-
-        const start = (e) => { startTime = Date.now(); };
-        const end = (e) => {
-            const duration = Date.now() - startTime;
-            // Aumentamos a 300ms para que sea más fácil en móvil
-            signalBuffer += (duration < 300) ? "." : "-";
-            if (signalBuffer.length > 3) signalBuffer = signalBuffer.slice(-3);
-            display.innerText = signalBuffer;
+        let contador = 0;
+        function registrarClic() {
+            contador++;
+            document.getElementById('display').innerText = contador + " / 3";
             
-            if (signalBuffer === "...") {
-                display.style.color = "var(--neon-green)";
-                btn.disabled = false;
+            if (contador === 3) {
+                document.getElementById('display').innerText = "SEÑAL LISTA!";
+                document.getElementById('display').style.color = "var(--neon-green)";
+                document.getElementById('btnValidar').disabled = false;
+            } else if (contador > 3) {
+                contador = 0;
+                document.getElementById('display').innerText = "0 / 3";
+                document.getElementById('display').style.color = "var(--neon-yellow)";
             }
-        };
-
-        const t = document.getElementById('transmitter');
-        t.addEventListener('mousedown', start);
-        t.addEventListener('mouseup', end);
-        t.addEventListener('touchstart', start);
-        t.addEventListener('touchend', end);
+        }
 
         function validarMision() {
             localStorage.setItem('m4', 'true');
