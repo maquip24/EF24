@@ -3,39 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSM24 | Centro de Operaciones</title>
+    <title>GSM24 | Misiones de Formación</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="mission-hub">
+    <div class="dashboard">
         <header>
-            <img src="image_b5c380.jpg" class="hero-logo">
-            <h1>CENTRO DE OPERACIONES GSM24</h1>
-            <p>Escuela de Formación Carlos Quiroga</p>
+            <h1>CENTRO DE MANDO GSM24</h1>
+            <p>Estado de las Misiones de Formación</p>
         </header>
 
-        <div class="grid-container">
-            <button class="module" onclick="location.href='m1.html'" id="m1">01<br><span>EL PORQUÉ</span></button>
-            <button class="module" onclick="location.href='m2.html'" id="m2">02<br><span>REENCONTRÉMONOS</span></button>
-            <button class="module" onclick="location.href='m3.html'" id="m3">03<br><span>LO BÁSICO</span></button>
-            <button class="module" onclick="location.href='m4.html'" id="m4">04<br><span>GOBERNANZA</span></button>
+        <div class="grid">
+            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'">
+                <h3>MISIÓN 1</h3>
+                <p>El Porqué</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'">
+                <h3>MISIÓN 2</h3>
+                <p>Fase 1</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'">
+                <h3>MISIÓN 3</h3>
+                <p>Fase 2</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'">
+                <h3>MISIÓN 4</h3>
+                <p>Fase 3</p>
+                <span class="status">PENDIENTE</span>
+            </div>
         </div>
 
-        <button class="final-module" id="m5" onclick="location.href='m5.html'" disabled>
-            05 | SEAL DE COMPROMISO
+        <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
+            ACCEDER AL COMPROMISO FINAL (M5)
         </button>
     </div>
 
     <script>
-        const checks = ['m1', 'm2', 'm3', 'm4'];
-        checks.forEach(id => {
-            if(localStorage.getItem(id)) document.getElementById(id).classList.add('active');
+        const missions = ['m1', 'm2', 'm3', 'm4'];
+        missions.forEach(m => {
+            if(localStorage.getItem(m)) {
+                document.getElementById('card-' + m).classList.add('completed');
+                document.getElementById('card-' + m).querySelector('.status').innerText = 'COMPLETADO';
+            }
         });
-
-        // Habilitar M5 solo si todos los anteriores están en localStorage
-        if(checks.every(id => localStorage.getItem(id))) {
-            document.getElementById('m5').disabled = false;
-        }
+        if(missions.every(m => localStorage.getItem(m))) document.getElementById('final-btn').disabled = false;
     </script>
 </body>
 </html>
