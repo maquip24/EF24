@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 01 | El Porqué | GSM24</title>
     <link rel="stylesheet" href="style.css">
-    <title>Misión 01 | Inmersiva</title>
 </head>
 <body>
     <div class="container">
@@ -15,20 +16,25 @@
             <input type="text" id="clave" placeholder="Ingresa la palabra clave...">
             
             <button onclick="validarMision()" class="action-btn">EJECUTAR PROTOCOLO</button>
-            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555;">Volver al Centro de Mando</button>
+            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555; margin-top:15px;">Volver al Centro de Mando</button>
         </div>
     </div>
 
     <script>
         function validarMision() {
-            // Ajusta la clave según el documento de la Escuela
-            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
+            const respuesta = document.getElementById('clave').value.toLowerCase();
+            // Validamos contra la palabra "servicio"
+            if(respuesta === "servicio") {
                 localStorage.setItem('m1', 'true');
-                // Efecto de carga
-                document.querySelector('.action-btn').innerText = "PROCESANDO...";
-                setTimeout(() => window.location.href = 'index.html', 800);
+                const btn = document.querySelector('.action-btn');
+                btn.innerText = "PROCESANDO...";
+                btn.style.background = "var(--neon-green)";
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 800);
             } else {
-                alert("Acceso denegado. Intenta de nuevo.");
+                alert("Acceso denegado. Código no reconocido.");
             }
         }
     </script>
