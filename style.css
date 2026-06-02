@@ -12,64 +12,43 @@ body {
     color: var(--text-color); 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
     margin: 0; 
-    padding: 10px;
+    padding: 20px;
     display: flex; 
     justify-content: center; 
     min-height: 100vh; 
 }
 
-.container { width: 100%; max-width: 500px; }
+.container { width: 100%; max-width: 450px; text-align: center; }
 
-/* Grid de Tarjetas adaptativo */
-.grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
+/* REJILLA DE UNA SOLA COLUMNA */
+.grid-single { 
+    display: flex; 
+    flex-direction: column; 
     gap: 15px; 
     margin: 20px 0; 
 }
 
 .mission-card { 
-    min-height: 140px; 
+    height: 100px; /* Tarjetas más compactas pero anchas */
     border-radius: 15px; 
     border: 2px solid #333; 
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
-    align-items: center;
+    cursor: pointer; 
     background: #111;
-    text-align: center;
-    padding: 10px;
+    transition: all 0.3s ease;
 }
 
-/* Card interna para Misiones */
-.card { 
-    background: #111; 
-    padding: 25px; 
-    border-radius: 20px; 
-    border: 1px solid #333;
-    margin-top: 20px;
-}
+.mission-card h3 { margin: 0; font-size: 1.1rem; }
+.mission-card p { margin: 2px 0; font-size: 0.9rem; opacity: 0.7; }
+.status { font-size: 0.7rem; font-weight: bold; margin-top: 5px; }
 
-input { 
-    width: 100%; 
-    padding: 15px; 
-    margin: 20px 0; 
-    border-radius: 10px; 
-    border: 1px solid #555; 
-    background: #000; 
-    color: white; 
-    box-sizing: border-box; /* Importante para que el input no se salga de la pantalla */
-    font-size: 1rem;
-}
+.mission-card.completed { border-color: var(--neon-green) !important; background: #0a1a10 !important; }
 
-button { 
-    width: 100%; 
-    padding: 18px; 
-    border-radius: 12px; 
-    border: none; 
-    background: var(--neon-blue); 
-    color: #000; 
-    font-weight: bold; 
-    font-size: 1rem;
-    cursor: pointer;
+.final-gate { 
+    width: 100%; padding: 20px; border-radius: 15px; 
+    background: #222; border: 2px solid #555; 
+    color: white; font-weight: bold; cursor: pointer; margin-top: 20px;
 }
+.final-gate:not(:disabled) { background: var(--neon-green); color: #000; border: none; }
