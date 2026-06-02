@@ -1,0 +1,12 @@
+:root { --neon: #00f2ff; --bg: #0a0b10; }
+body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; min-height: 100vh; }
+
+.mission-hub { width: 90%; max-width: 500px; padding: 20px; text-align: center; }
+.hero-logo { width: 120px; border-radius: 50%; border: 2px solid var(--neon); margin-bottom: 10px; }
+
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
+.module { height: 120px; background: #161b22; border: 1px solid #30363d; color: #8b949e; border-radius: 15px; cursor: pointer; transition: 0.3s; }
+.module.active { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 15px rgba(0,242,255,0.2); }
+
+.final-module { width: 100%; padding: 20px; background: linear-gradient(45deg, #00f2ff, #0055ff); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+.final-module:disabled { opacity: 0.3; cursor: not-allowed; }
