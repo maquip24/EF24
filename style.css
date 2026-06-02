@@ -4,60 +4,72 @@
     --neon-blue: #3e8bff;
     --neon-green: #3eff8b;
     --neon-yellow: #f3ff3e;
-    --neon-cyan: #00f2ff;
     --text-color: #ffffff;
 }
 
 body { 
     background-color: var(--bg); 
     color: var(--text-color); 
-    font-family: 'Inter', sans-serif; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
     margin: 0; 
+    padding: 10px;
     display: flex; 
     justify-content: center; 
     min-height: 100vh; 
 }
 
-.container { width: 90%; max-width: 600px; padding: 20px; text-align: center; }
+.container { width: 100%; max-width: 500px; }
 
-/* REJILLA MODERNA */
+/* Grid de Tarjetas adaptativo */
 .grid { 
     display: grid; 
     grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
-    margin: 30px 0; 
+    gap: 15px; 
+    margin: 20px 0; 
 }
 
-/* TARJETAS DINÁMICAS */
 .mission-card { 
-    height: 180px; 
-    border-radius: 20px; 
+    min-height: 140px; 
+    border-radius: 15px; 
     border: 2px solid #333; 
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
-    cursor: pointer; 
-    transition: all 0.4s ease; 
+    align-items: center;
     background: #111;
+    text-align: center;
+    padding: 10px;
 }
 
-.mission-card h3 { margin: 0; font-size: 1.2rem; }
-.mission-card p { margin: 5px 0; opacity: 0.7; }
-
-/* COLORES POR MISIÓN */
-.m1-theme:hover { border-color: var(--neon-red); background: #2a1111; }
-.m2-theme:hover { border-color: var(--neon-blue); background: #111e2a; }
-.m3-theme:hover { border-color: var(--neon-green); background: #112a1a; }
-.m4-theme:hover { border-color: var(--neon-yellow); background: #2a2a11; }
-
-.mission-card.completed { border-color: var(--neon-green) !important; background: #0a1a10 !important; }
-
-/* BOTÓN FINAL Y RESET */
-.final-gate { 
-    width: 100%; padding: 20px; border-radius: 15px; 
-    background: #222; border: 2px solid #555; 
-    color: white; font-weight: bold; cursor: pointer; 
+/* Card interna para Misiones */
+.card { 
+    background: #111; 
+    padding: 25px; 
+    border-radius: 20px; 
+    border: 1px solid #333;
+    margin-top: 20px;
 }
-.final-gate:not(:disabled) { background: var(--neon-cyan); color: #000; border: none; }
 
-.reset-btn { background: transparent; border: 1px solid #555; color: #888; margin-top: 20px; font-size: 0.7rem; padding: 10px; cursor: pointer; }
+input { 
+    width: 100%; 
+    padding: 15px; 
+    margin: 20px 0; 
+    border-radius: 10px; 
+    border: 1px solid #555; 
+    background: #000; 
+    color: white; 
+    box-sizing: border-box; /* Importante para que el input no se salga de la pantalla */
+    font-size: 1rem;
+}
+
+button { 
+    width: 100%; 
+    padding: 18px; 
+    border-radius: 12px; 
+    border: none; 
+    background: var(--neon-blue); 
+    color: #000; 
+    font-weight: bold; 
+    font-size: 1rem;
+    cursor: pointer;
+}
