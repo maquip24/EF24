@@ -1,0 +1,3 @@
+body { background: #0a192f; color: #e6f1ff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+.card { background: rgba(255, 255, 255, 0.05); border: 1px solid #64ffda; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
+button { background: #64ffda; color: #0a192f; border: none; padding: 15px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
