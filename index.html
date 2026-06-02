@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>GSM24 | Centro de Operaciones</title>
+    <title>CENTRO DE MANDO GSM24</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,24 +14,32 @@
 
         <div class="grid">
             <div class="mission-card m1-theme" id="card-m1" onclick="location.href='m1.html'">
-                <h3>MISIÓN 1</h3><p>El Porqué</p><span class="status">PENDIENTE</span>
+                <h3>MISIÓN 1</h3>
+                <p>El Porqué</p>
+                <span class="status">PENDIENTE</span>
             </div>
             <div class="mission-card m2-theme" id="card-m2" onclick="location.href='m2.html'">
-                <h3>MISIÓN 2</h3><p>Fase 1</p><span class="status">PENDIENTE</span>
+                <h3>MISIÓN 2</h3>
+                <p>Fase 1</p>
+                <span class="status">PENDIENTE</span>
             </div>
             <div class="mission-card m3-theme" id="card-m3" onclick="location.href='m3.html'">
-                <h3>MISIÓN 3</h3><p>Fase 2</p><span class="status">PENDIENTE</span>
+                <h3>MISIÓN 3</h3>
+                <p>Fase 2</p>
+                <span class="status">PENDIENTE</span>
             </div>
             <div class="mission-card m4-theme" id="card-m4" onclick="location.href='m4.html'">
-                <h3>MISIÓN 4</h3><p>Fase 3</p><span class="status">PENDIENTE</span>
+                <h3>MISIÓN 4</h3>
+                <p>Fase 3</p>
+                <span class="status">PENDIENTE</span>
             </div>
         </div>
 
         <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
             ACCEDER AL COMPROMISO FINAL (M5)
         </button>
-
-        <button onclick="reiniciarJuego()" class="reset-btn">REINICIAR TABLERO</button>
+        <br>
+        <button onclick="reiniciarJuego()" class="reset-btn">REINICIAR TABLERO DE MISIONES</button>
     </div>
 
     <script>
@@ -43,16 +51,11 @@
                 card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
             }
         });
-
         if(missions.every(m => localStorage.getItem(m) === 'true')) {
             document.getElementById('final-btn').disabled = false;
         }
-
         function reiniciarJuego() {
-            if(confirm("¿Reiniciar todo el progreso?")) {
-                localStorage.clear();
-                window.location.reload();
-            }
+            if(confirm("¿Reiniciar progreso?")) { localStorage.clear(); window.location.reload(); }
         }
     </script>
 </body>
