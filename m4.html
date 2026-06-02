@@ -2,73 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 04 | Transmisor Morse | GSM24</title>
+    <title>Misión 04 | Morse | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para el transmisor */
-        .signal-display {
-            background: #000;
-            border: 1px solid var(--neon-yellow);
-            height: 60px;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            letter-spacing: 10px;
-            color: var(--neon-yellow);
-            border-radius: 10px;
-        }
-
-        .morse-btn {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #222;
-            border: 4px solid var(--neon-yellow);
-            color: var(--neon-yellow);
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .morse-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 20px var(--neon-yellow);
-            background: #333;
-        }
-
-        .target-box {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 10px;
-        }
+        .signal-display { background: #000; border: 1px solid #f3ff3e; height: 60px; margin: 20px 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #f3ff3e; border-radius: 10px; }
+        .morse-btn { width: 150px; height: 150px; border-radius: 50%; background: #222; border: 5px solid #f3ff3e; color: #f3ff3e; font-weight: bold; cursor: pointer; transition: 0.1s; }
+        .morse-btn:active { background: #333; transform: scale(0.95); }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card m4-theme">
             <h2>MISIÓN 04: GOBERNANZA</h2>
-            <p>Emite la señal de mando en Código Morse.</p>
-            
-            <div class="target-box">OBJETIVO: <b>S</b> ( . . . )</div>
-            
-            <div class="signal-display" id="display">_ _ _</div>
-
-            <button class="morse-btn" id="transmitter">TAP</button>
-            
-            <p id="hint">Pulsa corto para punto ( . )</p>
-
-            <button id="btnValidar" onclick="validarMision()" disabled>TRANSMITIR SEÑAL</button>
-            <br>
-            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555; margin-top:15px; font-size: 0.8rem;">Volver al Centro de Mando</button>
+            <p>Emite la señal <b>S</b> (...)</p>
+            <div class="signal-display" id="display">...</div>
+            <button class="morse-btn" id="transmitter">EMITIR</button>
+            <p id="feedback" style="font-size:0.8rem; color:#888;">Presiona corto (.) o largo (-)</p>
+            <button id="btnValidar" onclick="validarMision()" disabled>VALIDAR GOBERNANZA</button>
         </div>
     </div>
 
     <script>
         const display = document.getElementById('display');
-        const btnValidar = document.getElementById('btnValidar');
-        const transmitter = document.getElementById('transmitter
+        const btn = document.getElementById('btnValidar');
+        let signalBuffer = "";
+        let startTime;
+
+        const start = (e) => { startTime = Date.now(); };
+        const end = (e) => {
+            const duration = Date.now() - startTime;
+            // Aumentamos a 300ms para que sea más fácil en móvil
+            signalBuffer += (duration < 300) ? "." : "-";
+            if (signalBuffer.length > 3) signalBuffer = signalBuffer.slice(-3);
+            display.innerText = signalBuffer;
+            
+            if (signalBuffer === "...") {
+                display.style.color = "var(--neon-green)";
+                btn.disabled = false;
+            }
+        };
+
+        const t = document.getElementById('transmitter');
+        t.addEventListener('mousedown', start);
+        t.addEventListener('mouseup', end);
+        t.addEventListener('touchstart', start);
+        t.addEventListener('touchend', end);
+
+        function validarMision() {
+            localStorage.setItem('m4', 'true');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
