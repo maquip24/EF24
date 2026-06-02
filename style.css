@@ -1,54 +1,17 @@
-:root {
-    --bg: #050505;
-    --neon-red: #ff3e3e;
-    --neon-blue: #3e8bff;
-    --neon-green: #3eff8b;
-    --neon-yellow: #f3ff3e;
-    --neon-cyan: #00f2ff;
-    --text-color: #ffffff;
+/* Mejora el efecto visual de completado */
+.mission-card.completed { 
+    border-color: var(--neon-green) !important; 
+    box-shadow: 0 0 15px rgba(62, 255, 139, 0.2);
 }
 
-body { 
-    background-color: var(--bg); 
-    color: var(--text-color); 
-    font-family: 'Inter', sans-serif; 
-    margin: 0; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
+.status { 
+    font-size: 0.9rem; 
+    margin-top: 15px; 
+    display: block; 
+    letter-spacing: 2px;
 }
 
-/* Contenedor central para todo */
-.container { width: 90%; max-width: 500px; text-align: center; }
-
-/* Estilos de Tarjetas (Dashboard y Misiones) */
-.card { 
-    background: #111; 
-    border: 2px solid #333; 
-    border-radius: 20px; 
-    padding: 30px; 
-    transition: all 0.4s ease; 
-}
-
-/* Clases para los colores de las misiones */
-.m1-theme:hover { border-color: var(--neon-red); background: #2a1111; }
-.m2-theme:hover { border-color: var(--neon-blue); background: #111e2a; }
-.m3-theme:hover { border-color: var(--neon-green); background: #112a1a; }
-.m4-theme:hover { border-color: var(--neon-yellow); background: #2a2a11; }
-
-/* Botones y acciones */
-button { 
-    background: #222; border: 2px solid #555; color: white; 
-    padding: 15px 30px; border-radius: 10px; cursor: pointer; 
-    font-weight: bold; width: 100%; margin-top: 10px;
-}
-button:not(:disabled):hover { border-color: var(--neon-cyan); }
-button:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Estilo para inputs técnicos */
-input { 
-    width: 80%; padding: 15px; border-radius: 10px; 
-    border: 1px solid var(--neon-cyan); background: #000; 
-    color: white; text-align: center; font-size: 1.2rem; margin: 20px 0;
+/* Centrado inmersivo */
+.container { 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
 }
