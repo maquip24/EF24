@@ -2,31 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 01 | GSM24</title>
     <link rel="stylesheet" href="style.css">
+    <title>Misión 01 | Inmersiva</title>
 </head>
 <body>
     <div class="container">
         <div class="card m1-theme">
-            <h2>MISIÓN 01: EL PORQUÉ</h2>
-            <p>Ingresa la palabra clave del legado:</p>
-            <input type="text" id="clave" placeholder="Palabra clave...">
-            <button onclick="validarMision()">VALIDAR MISIÓN</button>
+            <h2 style="font-size: 2rem; color: var(--neon-red);">MISIÓN 01</h2>
+            <p>La esencia Mosquetera se basa en el legado de Carlos Quiroga.</p>
+            <p style="font-style: italic; color: #888;">"¿Cuál es el propósito fundamental?"</p>
+            
+            <input type="text" id="clave" placeholder="Ingresa la palabra clave...">
+            
+            <button onclick="validarMision()" class="action-btn">EJECUTAR PROTOCOLO</button>
+            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555;">Volver al Centro de Mando</button>
         </div>
     </div>
 
     <script>
-// En tu m1.html, dentro de la función validarMision:
-function validarMision() {
-    const respuesta = document.getElementById('clave').value.toLowerCase();
-    if(respuesta === "servicio") {
-        localStorage.setItem('m1', 'true');
-        alert("¡Misión M1 guardada! Redirigiendo...");
-        window.location.href = 'index.html'; 
-    } else {
-        alert("Clave incorrecta");
-    }
-}
+        function validarMision() {
+            // Ajusta la clave según el documento de la Escuela
+            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
+                localStorage.setItem('m1', 'true');
+                // Efecto de carga
+                document.querySelector('.action-btn').innerText = "PROCESANDO...";
+                setTimeout(() => window.location.href = 'index.html', 800);
+            } else {
+                alert("Acceso denegado. Intenta de nuevo.");
+            }
+        }
     </script>
 </body>
 </html>
