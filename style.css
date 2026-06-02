@@ -25,27 +25,24 @@ body {
 .mission-card { 
     height: 180px; border-radius: 20px; border: 2px solid #333; 
     display: flex; flex-direction: column; justify-content: center; 
-    cursor: pointer; transition: all 0.4s ease; background: #111;
+    cursor: pointer; transition: all 0.3s ease; background: #111;
 }
 
-/* Efectos hover por color de misión */
+/* Efectos hover */
 .m1-theme:hover { border-color: var(--neon-red); background: #2a1111; }
 .m2-theme:hover { border-color: var(--neon-blue); background: #111e2a; }
 .m3-theme:hover { border-color: var(--neon-green); background: #112a1a; }
 .m4-theme:hover { border-color: var(--neon-yellow); background: #2a2a11; }
 
-.mission-card.completed { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(62, 255, 139, 0.2); }
+.mission-card.completed { border-color: var(--neon-green) !important; background: #0a1a10 !important; }
 
 .status { font-size: 0.7rem; font-weight: bold; margin-top: 10px; opacity: 0.8; }
 
 .final-gate { 
     width: 100%; padding: 25px; border-radius: 15px; 
     background: #222; border: 2px solid #555; 
-    color: white; font-weight: bold; cursor: pointer; 
+    color: white; font-weight: bold; cursor: pointer; margin-bottom: 20px;
 }
 .final-gate:not(:disabled) { background: var(--neon-cyan); color: #000; border: none; }
 
-.reset-btn { 
-    background: transparent; border: 1px solid #555; 
-    color: #888; margin-top: 40px; font-size: 0.7rem; 
-}
+.reset-btn { background: transparent; border: 1px solid #555; color: #888; font-size: 0.7rem; padding: 10px; cursor: pointer; }
