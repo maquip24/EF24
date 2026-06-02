@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Misión 03 | Seguimiento de Pista</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #pista-canvas { background: #111; border: 2px solid #3eff8b; cursor: crosshair; touch-action: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card m3-theme">
+            <h2>MISIÓN 03</h2>
+            <p>Sigue la pista de la "Formación Básica" para asegurar el éxito del programa.</p>
+            <canvas id="pista-canvas" width="300" height="300"></canvas>
+            <p id="progreso">Pista oculta: 0%</p>
+            <button id="btnValidar" onclick="validar()" disabled>FINALIZAR SEGUIMIENTO</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pista-canvas');
+        const ctx = canvas.getContext('2d');
+        let completado = 0;
+
+        // Dibujar el camino oculto
+        ctx.fillStyle = '#555';
+        ctx.fillRect(0, 0, 300, 300);
+        ctx.fillStyle = '#3eff8b';
+        ctx.font = '20px sans-serif';
+        ctx.fillText("SIGUE LAS HUELLAS...", 50, 150);
+
+        canvas.addEventListener('touchmove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            const y = e.touches[0].clientY - rect.top;
+            
+            ctx.clearRect(x - 20, y - 20, 40, 40);
+            completado++;
+            
+            if(completado > 500) {
+                document.getElementById('progreso').innerText = "¡PISTA ENCONTRADA!";
+                document.getElementById('btnValidar').disabled = false;
+            }
+        });
+
+        function validar() {
+            localStorage.setItem('m3', 'true');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
