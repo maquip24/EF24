@@ -16,14 +16,17 @@
     </div>
 
     <script>
-        function validarMision() {
-            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
-                localStorage.setItem('m1', 'true');
-                window.location.href = 'index.html';
-            } else {
-                alert("Clave denegada.");
-            }
-        }
+// En tu m1.html, dentro de la función validarMision:
+function validarMision() {
+    const respuesta = document.getElementById('clave').value.toLowerCase();
+    if(respuesta === "servicio") {
+        localStorage.setItem('m1', 'true');
+        alert("¡Misión M1 guardada! Redirigiendo...");
+        window.location.href = 'index.html'; 
+    } else {
+        alert("Clave incorrecta");
+    }
+}
     </script>
 </body>
 </html>
