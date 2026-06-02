@@ -2,39 +2,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 01 | El Porqué | GSM24</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Misión 01</title>
+    <style>
+        body { background: #050505; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; }
+        .card { border: 2px solid #ff3e3e; padding: 40px; border-radius: 20px; text-align: center; background: #111; }
+        input { padding: 15px; border-radius: 10px; border: 1px solid #ff3e3e; background: #000; color: white; text-align: center; }
+        button { padding: 15px 30px; background: #ff3e3e; border: none; color: white; border-radius: 10px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card m1-theme">
-            <h2 style="font-size: 2rem; color: var(--neon-red);">MISIÓN 01</h2>
-            <p>La esencia Mosquetera se basa en el legado de Carlos Quiroga.</p>
-            <p style="font-style: italic; color: #888;">"¿Cuál es el propósito fundamental?"</p>
-            
-            <input type="text" id="clave" placeholder="Ingresa la palabra clave...">
-            
-            <button onclick="validarMision()" class="action-btn">EJECUTAR PROTOCOLO</button>
-            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555; margin-top:15px;">Volver al Centro de Mando</button>
-        </div>
+    <div class="card">
+        <h2>MISIÓN 01</h2>
+        <p>Ingresa la palabra clave:</p>
+        <input type="text" id="clave">
+        <br><br>
+        <button onclick="validar()">VALIDAR</button>
+        <br><br>
+        <a href="index.html" style="color:#555">Volver</a>
     </div>
-
     <script>
-        function validarMision() {
-            const respuesta = document.getElementById('clave').value.toLowerCase();
-            // Validamos contra la palabra "servicio"
-            if(respuesta === "servicio") {
+        function validar() {
+            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
                 localStorage.setItem('m1', 'true');
-                const btn = document.querySelector('.action-btn');
-                btn.innerText = "PROCESANDO...";
-                btn.style.background = "var(--neon-green)";
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 800);
+                window.location.href = 'index.html';
             } else {
-                alert("Acceso denegado. Código no reconocido.");
+                alert("Incorrecto");
             }
         }
     </script>
