@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Misión 01 | GSM24</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card m1-theme">
+            <h2>MISIÓN 01: EL PORQUÉ</h2>
+            <p>Ingresa la palabra clave del legado:</p>
+            <input type="text" id="clave" placeholder="Palabra clave...">
+            <button onclick="validarMision()">VALIDAR MISIÓN</button>
+        </div>
+    </div>
+
+    <script>
+        function validarMision() {
+            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
+                localStorage.setItem('m1', 'true');
+                window.location.href = 'index.html';
+            } else {
+                alert("Clave denegada.");
+            }
+        }
+    </script>
+</body>
+</html>
