@@ -3,32 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lanzamiento Escuela Carlos Quiroga</title>
+    <title>GSM24 | Centro de Operaciones</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card">
-        <img src="image_b5c380.jpg" alt="Logo Escuela" style="width:100%; border-radius:10px; margin-bottom:20px;">
-        <h1>Escuela de Formación Carlos Quiroga</h1>
-        <p>Año del Fortalecimiento 2026</p>
-        
-        <div id="menu">
-            <button onclick="window.location.href='momento1.html'">1. El Porqué</button>
-            <button id="btn2" onclick="window.location.href='momento2.html'" disabled>2. Fase 1: Reencontrémonos</button>
-            <button id="btn3" onclick="window.location.href='momento3.html'" disabled>3. Fase 2: Lo Básico</button>
-            <button id="btn4" onclick="window.location.href='momento4.html'" disabled>4. Fase 3: Gobernanza</button>
-            <button id="btn5" onclick="window.location.href='momento5.html'" disabled>5. Mi Compromiso</button>
+    <div class="mission-hub">
+        <header>
+            <img src="image_b5c380.jpg" class="hero-logo">
+            <h1>CENTRO DE OPERACIONES GSM24</h1>
+            <p>Escuela de Formación Carlos Quiroga</p>
+        </header>
+
+        <div class="grid-container">
+            <button class="module" onclick="location.href='m1.html'" id="m1">01<br><span>EL PORQUÉ</span></button>
+            <button class="module" onclick="location.href='m2.html'" id="m2">02<br><span>REENCONTRÉMONOS</span></button>
+            <button class="module" onclick="location.href='m3.html'" id="m3">03<br><span>LO BÁSICO</span></button>
+            <button class="module" onclick="location.href='m4.html'" id="m4">04<br><span>GOBERNANZA</span></button>
         </div>
+
+        <button class="final-module" id="m5" onclick="location.href='m5.html'" disabled>
+            05 | SEAL DE COMPROMISO
+        </button>
     </div>
 
     <script>
-        // Lógica de desbloqueo: Verifica qué momentos han sido completados en el navegador
-        window.onload = () => {
-            if(localStorage.getItem('m1')) document.getElementById('btn2').disabled = false;
-            if(localStorage.getItem('m2')) document.getElementById('btn3').disabled = false;
-            if(localStorage.getItem('m3')) document.getElementById('btn4').disabled = false;
-            if(localStorage.getItem('m4')) document.getElementById('btn5').disabled = false;
-        };
+        const checks = ['m1', 'm2', 'm3', 'm4'];
+        checks.forEach(id => {
+            if(localStorage.getItem(id)) document.getElementById(id).classList.add('active');
+        });
+
+        // Habilitar M5 solo si todos los anteriores están en localStorage
+        if(checks.every(id => localStorage.getItem(id))) {
+            document.getElementById('m5').disabled = false;
+        }
     </script>
 </body>
 </html>
