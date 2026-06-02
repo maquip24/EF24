@@ -2,31 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 01</title>
+    <title>Misión 01 | El Porqué</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { background: #050505; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; }
-        .card { border: 2px solid #ff3e3e; padding: 40px; border-radius: 20px; text-align: center; background: #111; }
-        input { padding: 15px; border-radius: 10px; border: 1px solid #ff3e3e; background: #000; color: white; text-align: center; }
-        button { padding: 15px 30px; background: #ff3e3e; border: none; color: white; border-radius: 10px; cursor: pointer; }
+        .texto-narrativo {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 3px solid var(--neon-red);
+            background: rgba(255, 62, 62, 0.05);
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>MISIÓN 01</h2>
-        <p>Ingresa la palabra clave:</p>
-        <input type="text" id="clave">
-        <br><br>
-        <button onclick="validar()">VALIDAR</button>
-        <br><br>
-        <a href="index.html" style="color:#555">Volver</a>
+    <div class="container">
+        <div class="card m1-theme">
+            <h2 style="color: var(--neon-red);">MISIÓN 01</h2>
+            
+            <div class="texto-narrativo">
+                Los mosqueteros luchaban con espada;<br>
+                tú avanzarás con reflexión.<br>
+                Busca el lugar donde el alma se fortalece<br>
+                más que el brazo, y donde el silencio<br>
+                vale más que cualquier batalla.<br>
+                Ve al lugar, resuelve la actividad y carga la respuesta.
+            </div>
+            
+            <input type="text" id="clave" placeholder="Ingresa la palabra clave..." style="text-transform: uppercase;">
+            
+            <button onclick="validarMision()">VALIDAR MISIÓN</button>
+            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555; font-size:0.8rem; margin-top:10px;">Volver al Centro de Mando</button>
+        </div>
     </div>
+
     <script>
-        function validar() {
-            if(document.getElementById('clave').value.toLowerCase() === "servicio") {
+        function validarMision() {
+            const respuesta = document.getElementById('clave').value.toLowerCase();
+            if(respuesta === "servicio") {
                 localStorage.setItem('m1', 'true');
+                alert("¡Legado validado correctamente!");
                 window.location.href = 'index.html';
             } else {
-                alert("Incorrecto");
+                alert("Código no reconocido. Reflexiona nuevamente, Scout.");
             }
         }
     </script>
