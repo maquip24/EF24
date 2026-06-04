@@ -37,6 +37,10 @@
             <div class="morse-container">
                 <div class="signal-box" id="display">_</div>
                 <button class="morse-btn" id="transmitter">TAP</button>
+                
+                <button onclick="reiniciarSenal()" style="margin-top: 15px; background: transparent; border: 1px solid #444; color: #666; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.7rem;">
+                    REINICIAR SEÑAL
+                </button>
             </div>
 
             <p id="status" style="font-size: 0.8rem; color: #666;">Mantén presionado para raya, toque corto para punto.</p>
@@ -52,7 +56,6 @@
         const transmitter = document.getElementById('transmitter');
         const status = document.getElementById('status');
         
-        // Señal objetivo: .--. .- --.. (PAZ)
         const targetSignal = ".--..---.."; 
         let signal = "";
         let startTime;
@@ -68,7 +71,6 @@
             signal += (duration < 300) ? "." : "-";
             display.innerText = signal;
 
-            // Si la señal es correcta
             if (signal === targetSignal) {
                 localStorage.setItem('m4', 'true');
                 status.innerText = "¡SEÑAL TRANSMITIDA! GOBERNANZA CONFIRMADA.";
@@ -76,12 +78,18 @@
                 alert("¡Señal de Gobernanza aceptada! Misión cumplida.");
                 setTimeout(() => window.location.href = 'index.html', 1000);
             } 
-            // Reset si el usuario se equivoca o llega al límite
             else if (signal.length >= targetSignal.length) {
-                signal = "";
-                display.innerText = "_";
-                status.innerText = "Error: Intenta nuevamente.";
+                reiniciarSenal();
+                status.innerText = "Error: Secuencia incorrecta, reiniciando.";
             }
+        }
+
+        // Función para limpiar la señal manualmente o tras error
+        function reiniciarSenal() {
+            signal = "";
+            display.innerText = "_";
+            status.innerText = "Mantén presionado para raya, toque corto para punto.";
+            status.style.color = "#666";
         }
     </script>
 </body>
