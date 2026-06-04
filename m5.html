@@ -9,23 +9,13 @@
     <style>
         .step-card { display: none; }
         .active { display: block; }
-        .signature-container {
-            background: #111; border: 1px solid #333;
-            padding: 15px; border-radius: 15px; margin-bottom: 20px;
-        }
-        canvas {
-            width: 100%; height: 100px; background: #fff;
-            border-radius: 5px; margin-top: 10px; cursor: crosshair;
-        }
-        .btn-confirm {
-            width: 100%; padding: 15px; border-radius: 10px; border: none;
-            cursor: pointer; font-weight: bold; margin-top: 10px;
-        }
+        .input-name { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; box-sizing: border-box; }
+        .btn-confirm { width: 100%; padding: 15px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card" id="card-content">
+        <div class="card">
             <div id="step1" class="step-card active">
                 <div style="border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px;">
                     <h3>⚠️ ATENCIÓN</h3>
@@ -42,21 +32,25 @@
 
             <div id="step3" class="step-card">
                 <h2>TU EQUIPO</h2>
-                <input type="number" id="teamSize" placeholder="Cantidad de personas" style="width:100%; padding:15px; border-radius:10px; box-sizing:border-box;">
+                <input type="number" id="teamSize" placeholder="Cantidad de personas" class="input-name">
                 <button onclick="generarFormulario()" class="btn-confirm" style="background:var(--neon-yellow);">CONTINUAR</button>
             </div>
 
             <div id="step4" class="step-card">
-                <div id="pdf-view">
+                <div id="pdf-view" style="padding: 20px;">
                     <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
                     <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
-                    <p>Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este rastro con nuestra firma, 
-                    prometiendo lealtad a los principios scouts y la búsqueda constante de la excelencia. 
-                    <br><br><i><b>"Uno para Todos y Todos para Uno"</b></i></p>
-                    <div id="contenedor-firmas"></div>
+                    <p style="line-height:1.6;">
+                        Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
+                        prometiendo participar de los encuentros, talleres, cursos que me permitan avanzar en mi función como adulto voluntario 
+                        y de esta manera la búsqueda constante de la excelencia. 
+                        <br><br>
+                        <b>"Uno para Todos y Todos para Uno"</b>
+                    </p>
+                    <div id="lista-nombres-pdf"></div>
                 </div>
                 
-                <button onclick="descargarPDF()" class="btn-confirm" style="background:var(--neon-green);">DESCARGAR PDF</button>
+                <button onclick="descargarPDF()" class="btn-confirm" style="background:var(--neon-green);">DESCARGAR ACTA (PDF)</button>
                 <button onclick="finalizarMision()" class="btn-confirm" style="background:var(--neon-blue); color:white;">FINALIZAR Y VOLVER</button>
             </div>
         </div>
@@ -70,45 +64,30 @@
 
         function generarFormulario() {
             const num = document.getElementById('teamSize').value;
-            const lista = document.getElementById('contenedor-firmas');
-            lista.innerHTML = "";
+            const contenedor = document.getElementById('lista-nombres-pdf');
+            contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                lista.innerHTML += `<div class="signature-container">
-                    <input type="text" id="name-${i}" placeholder="Nombre ${i}" style="width:90%; padding:10px;">
-                    <canvas id="canvas-${i}"></canvas></div>`;
+                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre del integrante ${i}" class="input-name">`;
             }
             irA(4);
-            setTimeout(() => { for(let i=1; i<=num; i++) initCanvas(i); }, 300);
-        }
-
-        function initCanvas(id) {
-            const c = document.getElementById('canvas-'+id);
-            const ctx = c.getContext('2d');
-            let draw = false;
-            c.addEventListener('mousedown', () => draw=true);
-            c.addEventListener('mouseup', () => draw=false);
-            c.addEventListener('mousemove', (e) => {
-                if(!draw) return;
-                const r = c.getBoundingClientRect();
-                ctx.fillRect(e.clientX - r.left, e.clientY - r.top, 3, 3);
-            });
         }
 
         function descargarPDF() {
-            // Clonamos el contenido para no alterar la pantalla original
+            // Clonar el bloque para el PDF
             const elemento = document.getElementById('pdf-view').cloneNode(true);
             
-            // Reemplazar inputs por texto en el clon
+            // Reemplazar inputs por texto simple
             const inputs = elemento.querySelectorAll('input');
             inputs.forEach(input => {
                 const p = document.createElement('p');
-                p.innerHTML = "<b>Nombre:</b> " + input.value;
+                p.style.borderBottom = "1px solid #000";
+                p.innerText = input.value;
                 input.parentNode.replaceChild(p, input);
             });
 
             const opt = {
-                margin: 10,
-                filename: 'Compromiso_GSM24.pdf',
+                margin: 15,
+                filename: 'Acta_Compromiso_GSM24.pdf',
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4' }
             };
