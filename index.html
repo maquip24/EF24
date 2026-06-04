@@ -14,22 +14,22 @@
         </header>
 
         <div class="grid-single">
-            <div class="mission-card m1-theme" id="card-m1" onclick="location.href='m1.html'">
+            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'">
                 <h3>MISIÓN 1</h3>
                 <p>El Porqué</p>
                 <span class="status">PENDIENTE</span>
             </div>
-            <div class="mission-card m2-theme" id="card-m2" onclick="location.href='m2.html'">
+            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'">
                 <h3>MISIÓN 2</h3>
                 <p>Fase 1</p>
                 <span class="status">PENDIENTE</span>
             </div>
-            <div class="mission-card m3-theme" id="card-m3" onclick="location.href='m3.html'">
+            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'">
                 <h3>MISIÓN 3</h3>
                 <p>Fase 2</p>
                 <span class="status">PENDIENTE</span>
             </div>
-            <div class="mission-card m4-theme" id="card-m4" onclick="location.href='m4.html'">
+            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'">
                 <h3>MISIÓN 4</h3>
                 <p>Fase 3</p>
                 <span class="status">PENDIENTE</span>
@@ -46,23 +46,34 @@
     </div>
 
     <script>
-        const missions = ['m1', 'm2', 'm3', 'm4', 'm5'];
+        const missions = ['m1', 'm2', 'm3', 'm4'];
+        let todasCompletas = true;
+
+        // Verificar estado de cada misión
         missions.forEach(m => {
-            if(localStorage.getItem(m) === 'true') {
-                const card = document.getElementById('card-' + m);
-                if(card) {
-                    card.classList.add('completed');
-                    card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
-                }
+            const estado = localStorage.getItem(m);
+            const card = document.getElementById('card-' + m);
+            
+            if(estado === 'true') {
+                card.classList.add('completed');
+                card.querySelector('.status').innerText = 'COMPLETADO ✓';
+            } else {
+                todasCompletas = false;
             }
         });
 
-        // Habilitar acceso final solo si todas están completas
-        if(missions.every(m => localStorage.getItem(m) === 'true')) {
-            document.getElementById('final-btn').disabled = false;
+        // Habilitar botón si todas están en 'true'
+        const finalBtn = document.getElementById('final-btn');
+        if(todasCompletas) {
+            finalBtn.disabled = false;
+            finalBtn.style.opacity = "1";
+            finalBtn.style.cursor = "pointer";
+        } else {
+            finalBtn.disabled = true;
+            finalBtn.style.opacity = "0.5";
+            finalBtn.style.cursor = "not-allowed";
         }
 
-        // Función de reinicio
         function reiniciarTablero() {
             if(confirm("¿Estás seguro de que deseas reiniciar todo el progreso?")) {
                 localStorage.clear();
