@@ -2,46 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misión 01 | El Porqué | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos base para mantener la estética original y legibilidad en celular */
-        body { margin: 0; padding: 15px; box-sizing: border-box; }
-        .container { width: 100%; max-width: 600px; margin: 0 auto; }
-        .card { 
-            background: #111; padding: 25px; border-radius: 15px; 
-            border: 1px solid #333; text-align: center;
-        }
-        h2 { font-size: 1.6rem; color: var(--neon-yellow); margin-bottom: 20px; }
-        p { font-size: 1.1rem; line-height: 1.6; color: #ccc; margin-bottom: 20px; text-align: left; }
-        
-        /* Caja de respuesta y botones */
-        #respuesta-input { 
-            width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; 
-            border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;
-            box-sizing: border-box;
-        }
-        .btn-mision { 
-            width: 100%; padding: 18px; border-radius: 10px; border: none; 
-            font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px;
-        }
+        /* Diseño original restaurado */
+        .card { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #333; text-align: center; }
+        #respuesta-input { width: 100%; padding: 15px; margin: 15px 0; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; }
+        .btn-mision { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <h2>MISIÓN 01: EL PORQUÉ</h2>
-            
-            <p>
-                La Escuela de Formación Carlos Quiroga busca la excelencia en el liderazgo. 
-                ¿Cuál es el propósito fundamental de nuestra formación según los lineamientos de Baden-Powell?
-            </p>
+            <p>La Escuela de Formación Carlos Quiroga busca la excelencia en el liderazgo. ¿Cuál es el propósito fundamental de nuestra formación según los lineamientos de Baden-Powell?</p>
 
-            <!-- Caja de texto original -->
             <textarea id="respuesta-input" rows="4" placeholder="Escribe tu respuesta aquí..."></textarea>
 
-            <!-- Botones de acción originales -->
             <button onclick="enviarRespuesta()" class="btn-mision" style="background: var(--neon-green); color: black;">ENVIAR RESPUESTA</button>
             <button onclick="location.href='index.html'" class="btn-mision" style="background: transparent; border: 1px solid #444; color: #666;">REGRESAR</button>
         </div>
@@ -50,6 +28,7 @@
     <script>
         function enviarRespuesta() {
             const respuesta = document.getElementById('respuesta-input').value;
+            // Lógica original: validación mínima de 10 caracteres
             if (respuesta.length > 10) {
                 localStorage.setItem('m1', 'true');
                 alert("¡Respuesta enviada! Misión 1 completada.");
