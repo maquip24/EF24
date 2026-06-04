@@ -2,74 +2,105 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 05 | Compromiso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 05 | Compromiso Final | GSM24</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #000; color: #fff; padding: 20px; }
-        .step { display: none; }
+        .step-card { display: none; }
         .active { display: block; }
-        /* Estilo específico para el contenido del PDF */
-        #pdf-content-area { 
-            background: white !important; 
-            color: black !important; 
-            padding: 40px; 
-            width: 100%; 
-        }
+        .input-name { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; box-sizing: border-box; }
+        .btn-confirm { width: 100%; padding: 15px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div id="app">
-        <div id="step3" class="step active">
-            <h2>¿Cuántos integrantes son?</h2>
-            <input type="number" id="teamSize" style="width:100%; padding:10px;">
-            <button onclick="generarFormulario()" style="width:100%; padding:15px; margin-top:10px;">GENERAR FORMULARIO</button>
-        </div>
-
-        <div id="step4" class="step">
-            <div id="pdf-content-area">
-                <h1>ACTA DE COMPROMISO GSM24</h1>
-                <p>Escuela de Formación Carlos Quiroga</p>
-                <p>Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, prometiendo participar de los encuentros, talleres, cursos que me permitan avanzar en mi función como adulto voluntario y de esta manera la búsqueda constante de la excelencia. 
-                <br><br><b>"Uno para Todos y Todos para Uno"</b></p>
-                <div id="lista-nombres-pdf"></div>
+    <div class="container">
+        <div class="card">
+            <div id="step1" class="step-card active">
+                <div style="border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px;">
+                    <h3>⚠️ ATENCIÓN</h3>
+                    <p>Antes de proceder, es obligatorio leer el documento de lineamientos nacionales.</p>
+                    <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm" style="background:var(--neon-blue); color:white;">LEER DOCUMENTO</button>
+                </div>
             </div>
-            <button onclick="descargarPDF()" style="width:100%; padding:15px; background:green; color:white; border:none; margin-top:10px;">DESCARGAR ACTA (PDF)</button>
+
+            <div id="step2" class="step-card">
+                <h2>EL COMPROMISO</h2>
+                <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
+                <button onclick="irA(3)" class="btn-confirm" style="background:var(--neon-green);">SÍ, ME COMPROMETO</button>
+                <button onclick="location.href='index.html'" style="background:transparent; color:#666; border:none; margin-top:10px;">Aún no estoy listo</button>
+            </div>
+
+            <div id="step3" class="step-card">
+                <h2>TU EQUIPO</h2>
+                <p>¿Cuántas personas integran tu equipo hoy?</p>
+                <input type="number" id="teamSize" placeholder="Ej: 3" class="input-name">
+                <button onclick="generarFormulario()" class="btn-confirm" style="background:var(--neon-yellow);">CONTINUAR</button>
+            </div>
+
+            <div id="step4" class="step-card">
+                <div id="pdf-view" style="padding: 20px; background: white; color: black;">
+                    <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
+                    <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
+                    <p style="line-height:1.6;">
+                        Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
+                        prometiendo participar de los encuentros, talleres, cursos que me permitan avanzar en mi función como adulto voluntario 
+                        y de esta manera la búsqueda constante de la excelencia. 
+                        <br><br>
+                        <b>"Uno para Todos y Todos para Uno"</b>
+                    </p>
+                    <div id="lista-nombres-pdf"></div>
+                </div>
+                
+                <button onclick="descargarPDF()" class="btn-confirm" style="background:var(--neon-green);">DESCARGAR ACTA (PDF)</button>
+                <button onclick="finalizarMision()" class="btn-confirm" style="background:var(--neon-blue); color:white;">FINALIZAR Y VOLVER</button>
+            </div>
         </div>
     </div>
 
     <script>
+        function irA(p) { 
+            document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active'));
+            document.getElementById('step'+p).classList.add('active'); 
+        }
+
         function generarFormulario() {
             const num = document.getElementById('teamSize').value;
             const contenedor = document.getElementById('lista-nombres-pdf');
             contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre ${i}" style="width:100%; padding:10px; margin:5px 0;">`;
+                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre del integrante ${i}" class="input-name">`;
             }
-            document.getElementById('step3').classList.remove('active');
-            document.getElementById('step4').classList.add('active');
+            irA(4);
         }
 
-        async function descargarPDF() {
-            const el = document.getElementById('pdf-content-area');
+        function descargarPDF() {
+            // Clonamos el elemento de vista del PDF
+            const elemento = document.getElementById('pdf-view').cloneNode(true);
             
-            // 1. Transformar inputs a texto antes de capturar
-            const inputs = el.querySelectorAll('input');
-            inputs.forEach(i => {
+            // Reemplazar inputs por texto estático en el clon para que el PDF los capture
+            const inputs = elemento.querySelectorAll('input');
+            inputs.forEach(input => {
                 const p = document.createElement('p');
-                p.innerText = "Integrante: " + i.value;
-                i.parentNode.replaceChild(p, i);
+                p.style.borderBottom = "1px solid #000";
+                p.style.margin = "5px 0";
+                p.innerText = input.value || "__________________________";
+                input.parentNode.replaceChild(p, input);
             });
 
-            // 2. Generar el PDF
             const opt = {
-                margin: 10,
-                filename: 'Acta.pdf',
+                margin: 15,
+                filename: 'Acta_Compromiso_GSM24.pdf',
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4' }
             };
             
-            await html2pdf().set(opt).from(el).save();
-            location.reload(); // Recargar para volver a habilitar los inputs
+            html2pdf().set(opt).from(elemento).save();
+        }
+
+        function finalizarMision() {
+            localStorage.setItem('m5', 'true');
+            window.location.href = 'index.html';
         }
     </script>
 </body>
