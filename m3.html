@@ -3,70 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSM24 | Centro de Operaciones</title>
+    <title>Misión 03 | Rastreo | GSM24</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .canvas-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border: 4px solid #333;
+            border-radius: 15px;
+            /* Fondo donde está escrito BADEN POWELL */
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #pista-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        #codigo-oculto {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--neon-green);
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header style="margin-bottom: 30px;">
-            <h1>CENTRO DE MANDO GSM24</h1>
-            <p style="color: #666;">Escuela de Formación Carlos Quiroga</p>
-        </header>
+        <div class="card m3-theme">
+            <h2 style="color: var(--neon-green);">MISIÓN 03: RASTREO</h2>
+            
+            <p>Limpia la niebla para revelar el nombre del fundador.</p>
 
-        <div class="grid-single">
-            <div class="mission-card m1-theme" id="card-m1" onclick="location.href='m1.html'">
-                <h3>MISIÓN 1</h3>
-                <p>El Porqué</p>
-                <span class="status">PENDIENTE</span>
+            <div class="canvas-container">
+                <div id="codigo-oculto">BADEN POWELL</div>
+                <canvas id="pista-canvas" width="300" height="300"></canvas>
             </div>
-            <div class="mission-card m2-theme" id="card-m2" onclick="location.href='m2.html'">
-                <h3>MISIÓN 2</h3>
-                <p>Fase 1</p>
-                <span class="status">PENDIENTE</span>
+
+            <div id="input-area" style="display:none;">
+                <input type="text" id="respuesta" placeholder="Escribe el nombre revelado..." style="text-transform: uppercase;">
+                <button onclick="validarRespuesta()" style="background: var(--neon-green); color: black;">VALIDAR RASTREO</button>
             </div>
-            <div class="mission-card m3-theme" id="card-m3" onclick="location.href='m3.html'">
-                <h3>MISIÓN 3</h3>
-                <p>Fase 2</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card m4-theme" id="card-m4" onclick="location.href='m4.html'">
-                <h3>MISIÓN 4</h3>
-                <p>Fase 3</p>
-                <span class="status">PENDIENTE</span>
-            </div>
+
+            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:15px;">REGRESAR AL CENTRO</button>
         </div>
-
-        <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
-            ACCEDER AL COMPROMISO FINAL
-        </button>
-
-        <button onclick="reiniciarTablero()" style="width: 100%; padding: 15px; margin-top: 15px; border-radius: 15px; background: transparent; border: 1px solid #444; color: #666; cursor: pointer; font-size: 0.8rem;">
-            REINICIAR TABLERO
-        </button>
     </div>
 
     <script>
-        const missions = ['m1', 'm2', 'm3', 'm4', 'm5'];
-        missions.forEach(m => {
-            if(localStorage.getItem(m) === 'true') {
-                const card = document.getElementById('card-' + m);
-                if(card) {
-                    card.classList.add('completed');
-                    card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
-                }
-            }
-        });
+        const canvas = document.getElementById('pista-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Dibujar la niebla (capa superior)
+        ctx.fillStyle = '#333';
+        ctx.fillRect(0, 0, 300, 300);
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText("DESLIZA AQUÍ", 150, 150);
 
-        // Habilitar acceso final solo si todas están completas
-        if(missions.every(m => localStorage.getItem(m) === 'true')) {
-            document.getElementById('final-btn').disabled = false;
+        let pixelsLimpiados = 0;
+        const totalThreshold = 2000; // Sensibilidad de limpieza
+
+        function limpiar(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            
+            ctx.clearRect(x - 25, y - 25, 50, 50);
+            
+            pixelsLimpiados++;
+            if (pixelsLimpiados > totalThreshold) {
+                document.getElementById('input-area').style.display = 'block';
+            }
         }
 
-        // Función de reinicio
-        function reiniciarTablero() {
-            if(confirm("¿Estás seguro de que deseas reiniciar todo el progreso?")) {
-                localStorage.clear();
-                location.reload();
+        canvas.addEventListener('mousemove', limpiar);
+        canvas.addEventListener('touchmove', limpiar);
+
+        function validarRespuesta() {
+            const resp = document.getElementById('respuesta').value.toUpperCase();
+            if(resp === "BADEN POWELL") {
+                localStorage.setItem('m3', 'true');
+                alert("¡Rastreo exitoso, Scout!");
+                window.location.href = 'index.html';
+            } else {
+                alert("Nombre incorrecto. ¡Sigue limpiando y observa bien!");
             }
         }
     </script>
