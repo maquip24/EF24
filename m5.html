@@ -2,56 +2,152 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 05 | El Compromiso | GSM24</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 05 | Compromiso Final | GSM24</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        #signature-pad { background: white; border-radius: 10px; width: 100%; height: 200px; touch-action: none; }
-        .upload-area { margin: 20px 0; border: 2px dashed #555; padding: 20px; border-radius: 10px; }
+        .step-card { display: none; }
+        .active { display: block; }
+        .signature-container {
+            background: #111; border: 1px solid #333;
+            padding: 15px; border-radius: 15px; margin-bottom: 20px;
+        }
+        canvas {
+            width: 100%; height: 120px; background: #000;
+            border: 1px dashed #555; border-radius: 10px; margin-top: 10px;
+        }
+        .btn-yes { background: var(--neon-green); color: black; font-weight: bold; }
+        .alert-box { border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px; background: rgba(255,0,0,0.1); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card m5-theme">
-            <h2>MISIÓN 05: EL COMPROMISO</h2>
-            
-            <div class="upload-area">
-                <p>1. Sube tu fotografía de perfil:</p>
-                <input type="file" id="fotoInput" accept="image/*">
+    <div class="container" id="content-to-pdf">
+        <div class="card">
+            <div id="step1" class="step-card active">
+                <div class="alert-box">
+                    <h3 style="color:var(--neon-red)">⚠️ ATENCIÓN</h3>
+                    <p>Antes de proceder, es obligatorio leer el documento de lineamientos nacionales.</p>
+                    <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm" style="background:var(--neon-blue); color:white;">LEER DOCUMENTO</button>
+                </div>
             </div>
 
-            <p>2. Firma tu compromiso:</p>
-            <canvas id="signature-pad"></canvas>
-            <button onclick="signaturePad.clear()" style="background:#444; font-size:0.7rem;">Limpiar Firma</button>
+            <div id="step2" class="step-card">
+                <h2>EL COMPROMISO</h2>
+                <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout y personal?</p>
+                <button onclick="irA(3)" class="btn-confirm btn-yes">SÍ, ME COMPROMETO</button>
+                <button onclick="location.href='index.html'" style="background:transparent; color:#666; border:none; margin-top:10px;">Aún no estoy listo</button>
+            </div>
 
-            <br><br>
-            <button class="final-gate" onclick="generarPDF()">DESCARGAR COMPROMISO PDF</button>
-            <br>
-            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555;">Volver al Centro</button>
+            <div id="step3" class="step-card">
+                <h2>TU EQUIPO</h2>
+                <p>¿Cuántas personas integran tu equipo hoy?</p>
+                <input type="number" id="teamSize" placeholder="Ej: 3" style="text-align:center; font-size:1.5rem;">
+                <button onclick="generarFormulario()" class="btn-confirm" style="background:var(--neon-yellow); color:black;">CONTINUAR</button>
+            </div>
+
+            <div id="step4" class="step-card">
+                <div id="pdf-header" style="display:none; text-align:center;">
+                    <h1>ACTA DE COMPROMISO GSM24</h1>
+                    <p>Escuela de Formación Carlos Quiroga</p>
+                    <hr>
+                </div>
+                
+                <p id="texto-compromiso">
+                    Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este rastro con nuestra firma, 
+                    prometiendo lealtad a los principios scouts y la búsqueda constante de la excelencia.
+                </p>
+
+                <div id="contenedor-firmas"></div>
+
+                <button id="btn-pdf" onclick="descargarPDF()" class="btn-confirm" style="background:var(--neon-green); color:black; display:none;">DESCARGAR ACTA (PDF)</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('signature-pad');
-        const signaturePad = new SignaturePad(canvas);
+        function irA(paso) {
+            document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + paso).classList.add('active');
+        }
 
-        function generarPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        function generarFormulario() {
+            const num = document.getElementById('teamSize').value;
+            if (num < 1) return alert("Ingresa un número válido.");
             
-            doc.setFontSize(20);
-            doc.text("Compromiso Escuela Carlos Quiroga 2026", 20, 20);
-            doc.setFontSize(12);
-            doc.text("Yo, Scout del GSM24, me comprometo a fortalecer la gobernanza, \nla sostenibilidad y la cultura de equipo.", 20, 40);
+            const lista = document.getElementById('contenedor-firmas');
+            lista.innerHTML = "";
+            
+            for (let i = 1; i <= num; i++) {
+                lista.innerHTML += `
+                    <div class="signature-container">
+                        <label style="color:#666">Integrante ${i}</label>
+                        <input type="text" placeholder="Nombre completo" class="member-name" style="margin-bottom:10px;">
+                        <canvas id="canvas-${i}"></canvas>
+                        <button onclick="limpiarCanvas(${i})" style="font-size:0.6rem; background:none; border:none; color:#555;">Limpiar trazo</button>
+                    </div>`;
+            }
+            
+            irA(4);
+            document.getElementById('btn-pdf').style.display = "block";
+            
+            // Inicializar lienzos después de crearlos
+            setTimeout(() => {
+                for (let i = 1; i <= num; i++) initCanvas(i);
+            }, 100);
+        }
 
-            // Añadir firma
-            const signatureData = signaturePad.toDataURL('image/png');
-            doc.addImage(signatureData, 'PNG', 20, 60, 100, 50);
+        let pads = {};
 
-            doc.save("Compromiso_Scout_GSM24.pdf");
-            alert("¡Compromiso sellado! Documento descargado.");
-            localStorage.setItem('m5', 'true');
+        function initCanvas(id) {
+            const canvas = document.getElementById('canvas-' + id);
+            const ctx = canvas.getContext('2d');
+            let drawing = false;
+            ctx.strokeStyle = "#FFF";
+            ctx.lineWidth = 2;
+
+            function start(e) { drawing = true; ctx.beginPath(); }
+            function stop() { drawing = false; }
+            function draw(e) {
+                if (!drawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', stop);
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+            canvas.addEventListener('touchend', stop);
+        }
+
+        function limpiarCanvas(id) {
+            const c = document.getElementById('canvas-' + id);
+            c.getContext('2d').clearRect(0, 0, c.width, c.height);
+        }
+
+        function descargarPDF() {
+            const elemento = document.getElementById('content-to-pdf');
+            document.getElementById('pdf-header').style.display = "block";
+            document.querySelectorAll('button').forEach(b => b.style.display = "none");
+
+            const opciones = {
+                margin: 10,
+                filename: 'Compromiso_GSM24.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, backgroundColor: '#000000' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opciones).from(elemento).save().then(() => {
+                localStorage.setItem('m5', 'true');
+                alert("Acta generada. Misión final cumplida.");
+                location.href = 'index.html';
+            });
         }
     </script>
 </body>
