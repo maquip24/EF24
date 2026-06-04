@@ -2,39 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 01 | El Porqué | GSM24</title>
+    <title>Misión 01 | El Porqué</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Diseño original restaurado */
-        .card { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #333; text-align: center; }
-        #respuesta-input { width: 100%; padding: 15px; margin: 15px 0; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box; }
-        .btn-mision { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .texto-narrativo {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 3px solid var(--neon-red);
+            background: rgba(255, 62, 62, 0.05);
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <h2>MISIÓN 01: EL PORQUÉ</h2>
-            <p>La Escuela de Formación Carlos Quiroga busca la excelencia en el liderazgo. ¿Cuál es el propósito fundamental de nuestra formación según los lineamientos de Baden-Powell?</p>
-
-            <textarea id="respuesta-input" rows="4" placeholder="Escribe tu respuesta aquí..."></textarea>
-
-            <button onclick="enviarRespuesta()" class="btn-mision" style="background: var(--neon-green); color: black;">ENVIAR RESPUESTA</button>
-            <button onclick="location.href='index.html'" class="btn-mision" style="background: transparent; border: 1px solid #444; color: #666;">REGRESAR</button>
+        <div class="card m1-theme">
+            <h2 style="color: var(--neon-red);">MISIÓN 01</h2>
+            
+            <div class="texto-narrativo">
+                Los mosqueteros luchaban con espada;<br>
+                tú avanzarás con reflexión.<br>
+                Busca el lugar donde el alma se fortalece<br>
+                más que el brazo, y donde el silencio<br>
+                vale más que cualquier batalla.<br>
+                Ve al lugar, resuelve la actividad y carga la respuesta.
+            </div>
+            
+            <input type="text" id="clave" placeholder="Ingresa la palabra clave..." style="text-transform: uppercase;">
+            
+            <button onclick="validarMision()">VALIDAR MISIÓN</button>
+            <button onclick="location.href='index.html'" style="background:transparent; border:none; color:#555; font-size:0.8rem; margin-top:10px;">Volver al Centro de Mando</button>
         </div>
     </div>
 
     <script>
-        function enviarRespuesta() {
-            const respuesta = document.getElementById('respuesta-input').value;
-            // Lógica original: validación mínima de 10 caracteres
-            if (respuesta.length > 10) {
+        function validarMision() {
+            const respuesta = document.getElementById('clave').value.toLowerCase();
+            if(respuesta === "servicio") {
                 localStorage.setItem('m1', 'true');
-                alert("¡Respuesta enviada! Misión 1 completada.");
+                alert("¡Legado validado correctamente!");
                 window.location.href = 'index.html';
             } else {
-                alert("Por favor, escribe una respuesta más completa.");
+                alert("Código no reconocido. Reflexiona nuevamente, Scout.");
             }
         }
     </script>
