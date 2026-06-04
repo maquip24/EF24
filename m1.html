@@ -6,44 +6,57 @@
     <title>Misión 01 | El Porqué | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Ajustes de legibilidad para móvil */
-        body { margin: 0; padding: 20px; box-sizing: border-box; }
+        /* Estilos base para mantener la estética original y legibilidad en celular */
+        body { margin: 0; padding: 15px; box-sizing: border-box; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .card { 
-            background: #111; padding: 30px; border-radius: 20px; 
+            background: #111; padding: 25px; border-radius: 15px; 
             border: 1px solid #333; text-align: center;
         }
-        h2 { font-size: 1.8rem; color: var(--neon-yellow); margin-bottom: 20px; }
-        p { font-size: 1.1rem; line-height: 1.6; color: #ccc; margin-bottom: 30px; }
+        h2 { font-size: 1.6rem; color: var(--neon-yellow); margin-bottom: 20px; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #ccc; margin-bottom: 20px; text-align: left; }
         
-        /* Botones táctiles grandes */
+        /* Caja de respuesta y botones */
+        #respuesta-input { 
+            width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; 
+            border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;
+            box-sizing: border-box;
+        }
         .btn-mision { 
-            width: 100%; padding: 20px; border-radius: 12px; border: none; 
-            font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-bottom: 15px;
+            width: 100%; padding: 18px; border-radius: 10px; border: none; 
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card m1-theme">
-            <h2 style="color: var(--neon-yellow);">MISIÓN 01: EL PORQUÉ</h2>
+        <div class="card">
+            <h2>MISIÓN 01: EL PORQUÉ</h2>
             
-            <p style="text-align: left;">
-                La Escuela de Formación Carlos Quiroga no es solo un centro de instrucción, es el motor que mantiene vivo el espíritu scout en nuestra región. 
-                Entender nuestra razón de ser es la base para guiar a otros con el ejemplo.<br><br>
-                <b>Tu compromiso con el aprendizaje es la llave para la excelencia.</b>
+            <p>
+                La Escuela de Formación Carlos Quiroga busca la excelencia en el liderazgo. 
+                ¿Cuál es el propósito fundamental de nuestra formación según los lineamientos de Baden-Powell?
             </p>
 
-            <button onclick="completarMision()" class="btn-mision" style="background: var(--neon-green); color: black;">MARCAR MISIÓN COMPLETADA</button>
-            <button onclick="location.href='index.html'" class="btn-mision" style="background: transparent; border: 1px solid #444; color: #666;">REGRESAR AL CENTRO</button>
+            <!-- Caja de texto original -->
+            <textarea id="respuesta-input" rows="4" placeholder="Escribe tu respuesta aquí..."></textarea>
+
+            <!-- Botones de acción originales -->
+            <button onclick="enviarRespuesta()" class="btn-mision" style="background: var(--neon-green); color: black;">ENVIAR RESPUESTA</button>
+            <button onclick="location.href='index.html'" class="btn-mision" style="background: transparent; border: 1px solid #444; color: #666;">REGRESAR</button>
         </div>
     </div>
 
     <script>
-        function completarMision() {
-            localStorage.setItem('m1', 'true');
-            alert("¡Excelente! Misión 1 completada.");
-            window.location.href = 'index.html';
+        function enviarRespuesta() {
+            const respuesta = document.getElementById('respuesta-input').value;
+            if (respuesta.length > 10) {
+                localStorage.setItem('m1', 'true');
+                alert("¡Respuesta enviada! Misión 1 completada.");
+                window.location.href = 'index.html';
+            } else {
+                alert("Por favor, escribe una respuesta más completa.");
+            }
         }
     </script>
 </body>
