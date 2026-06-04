@@ -33,12 +33,17 @@
             text-align: center;
             padding: 10px;
         }
-        #input-area {
-            margin-top: 20px;
-            padding: 20px;
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
             background: #111;
-            border-radius: 15px;
-            display: none; /* Oculto inicialmente */
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -46,7 +51,11 @@
     <div class="container">
         <div class="card m3-theme">
             <h2 style="color: var(--neon-green);">MISIÓN 03: RASTREO</h2>
-            <p>Limpia la niebla para revelar el código oculto y úsalo para completar la misión.</p>
+            
+            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 20px;">
+                Lo primero que debes hacer esta relacionado con:<br>
+                <b>El scout es Limpio en pensamiento, palabra y obra.</b>
+            </p>
 
             <div class="canvas-container">
                 <div id="codigo-oculto">BADEN POWELL</div>
@@ -54,18 +63,21 @@
             </div>
 
             <div id="input-area">
-                <input type="text" id="respuesta" placeholder="Escribe la clave final..." style="text-transform: uppercase;">
-                <button onclick="validarRespuesta()" style="background: var(--neon-green); color: black; margin-top: 10px;">VALIDAR RESPUESTA</button>
+                <input type="text" id="respuesta" class="input-box" placeholder="Escribe la clave...">
+                <button onclick="validarRespuesta()" style="width:100%; padding:15px; background: var(--neon-green); color: black; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">
+                    VALIDAR RESPUESTA
+                </button>
             </div>
 
-            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:20px;">REGRESAR AL CENTRO</button>
+            <button onclick="location.href='index.html'" style="width:100%; background:transparent; border:1px solid #444; color:#666; margin-top:20px; padding:15px; border-radius:10px; cursor:pointer;">
+                REGRESAR AL CENTRO
+            </button>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('pista-canvas');
         const ctx = canvas.getContext('2d');
-        const inputArea = document.getElementById('input-area');
         
         // Dibujar niebla inicial
         ctx.fillStyle = '#333';
@@ -75,22 +87,11 @@
         ctx.textAlign = 'center';
         ctx.fillText("DESLIZA AQUÍ", 150, 150);
 
-        let pixelsLimpiados = 0;
-        const umbral = 1500; // Sensibilidad de limpieza
-
         function limpiar(e) {
             const rect = canvas.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
             const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            
             ctx.clearRect(x - 30, y - 30, 60, 60);
-            
-            pixelsLimpiados++;
-            
-            // Si supera el umbral, mostramos el campo de respuesta
-            if (pixelsLimpiados > umbral) {
-                inputArea.style.display = 'block';
-            }
         }
 
         canvas.addEventListener('mousemove', limpiar);
@@ -98,13 +99,12 @@
 
         function validarRespuesta() {
             const resp = document.getElementById('respuesta').value.toLowerCase();
-            // La clave requerida es "formarnos"
             if(resp === "formarnos") {
                 localStorage.setItem('m3', 'true');
-                alert("¡Clave correcta! Misión completada.");
+                alert("¡Clave correcta! Misión cumplida.");
                 window.location.href = 'index.html';
             } else {
-                alert("Clave incorrecta. Observa bien el código y vuelve a intentar.");
+                alert("Clave incorrecta. Inténtalo de nuevo.");
             }
         }
     </script>
