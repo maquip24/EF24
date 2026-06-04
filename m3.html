@@ -61,8 +61,12 @@
         <div class="card m3-theme">
             <h2 style="color: var(--neon-green);">MISIÓN 03: RASTREO</h2>
             
-            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 20px;">
-                Lo primero que debes hacer esta relacionado con:<br>
+            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 20px; text-align: left;">
+                "__________ cruza el Ande<br>
+                Que riega dos océanos;<br>
+                Espadas cual centellas<br>
+                Fulguran en Junín"<br><br>
+                Llega a ese lugar y la clave está en:<br>
                 <b>El scout es Limpio en pensamiento, palabra y obra.</b>
             </p>
 
@@ -87,13 +91,9 @@
         const canvas = document.getElementById('pista-canvas');
         const ctx = canvas.getContext('2d');
         
-        // Dibujar niebla inicial
+        // Dibujar niebla inicial (sin texto)
         ctx.fillStyle = '#333';
         ctx.fillRect(0, 0, 300, 300);
-        ctx.fillStyle = '#aaa';
-        ctx.font = '20px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText("DESLIZA AQUÍ", 150, 150);
 
         function limpiar(e) {
             const rect = canvas.getBoundingClientRect();
