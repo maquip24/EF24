@@ -39,6 +39,10 @@
 
             <div id="step4" class="step-card">
                 <div id="pdf-view" style="padding: 20px; background: white; color: black;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <img src="https://drive.google.com/uc?id=1gszq7EM3VUPrlGRpvUBjEIJ5GGNeXBKM" style="max-width: 150px;" alt="Logo Scout">
+                    </div>
+                    
                     <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
                     <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
                     <p style="line-height:1.6;">
@@ -77,7 +81,6 @@
         function descargarPDF() {
             const elemento = document.getElementById('pdf-view').cloneNode(true);
             
-            // Reemplazar inputs por texto estático en el clon
             const inputs = elemento.querySelectorAll('input');
             inputs.forEach(input => {
                 const p = document.createElement('p');
