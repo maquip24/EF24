@@ -2,31 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag crítico para escalado móvil -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Centro de Mando GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para asegurar la visibilidad en móviles */
-        body { margin: 0; padding: 0; overflow-x: hidden; }
-        .container { width: 100%; max-width: 600px; padding: 15px; box-sizing: border-box; margin: 0 auto; }
-        .hidden { display: none; }
-        .btn-ready { 
-            display: block; width: 100%; margin: 20px 0; padding: 18px; 
-            background: var(--neon-green, #2ecc71); color: black; font-weight: bold; 
-            font-size: 1.1rem; border-radius: 12px; text-align: center; 
-            text-decoration: none; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        /* Clase para ocultar el botón completamente */
+        .hidden { display: none !important; }
+        
+        /* Botón de acceso final (se verá igual a tus otras tarjetas o botones según tu estilo) */
+        .btn-final-mision { 
+            display: block; 
+            width: 100%; 
+            padding: 20px; 
+            margin-top: 20px; 
+            background: var(--neon-green); 
+            color: #000; 
+            font-weight: bold; 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 12px;
+            cursor: pointer;
         }
-        /* Ajuste de cuadrícula para móviles */
-        .grid-single { display: flex; flex-direction: column; gap: 15px; }
-        .mission-card { width: 100%; padding: 20px; box-sizing: border-box; border: 1px solid #333; border-radius: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header style="margin-bottom: 20px; text-align: center;">
-            <h1 style="font-size: 1.5rem;">CENTRO DE MANDO GSM24</h1>
-            <p style="font-size: 0.9rem; color: #888;">Escuela de Formación Carlos Quiroga</p>
+        <header style="text-align: center; margin-bottom: 30px;">
+            <h1>CENTRO DE MANDO GSM24</h1>
+            <p>Escuela de Formación Carlos Quiroga</p>
         </header>
 
         <div class="grid-single">
@@ -36,27 +39,33 @@
             <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>Fase 3</p><span class="status">PENDIENTE</span></div>
         </div>
 
-        <a href="m5.html" id="btn-final" class="btn-ready hidden">ACCEDER AL COMPROMISO FINAL (MISIÓN 5)</a>
+        <a href="m5.html" id="btn-mision-final" class="btn-final-mision hidden">ACCEDER AL COMPROMISO FINAL</a>
         
-        <button onclick="reiniciarTablero()" style="width:100%; padding:12px; margin-top:20px; background:transparent; border:1px solid #444; color:#666; border-radius:8px;">REINICIAR TABLERO</button>
+        <button onclick="reiniciarTablero()" style="width:100%; padding:15px; margin-top:20px; background:transparent; border:1px solid #444; color:#666; border-radius:8px;">REINICIAR TABLERO</button>
     </div>
 
     <script>
+        // 1. Verificar estado de misiones 1 a 4
         const missions = ['m1', 'm2', 'm3', 'm4'];
+        let todasCompletas = true;
+
         missions.forEach(m => {
             const card = document.getElementById('card-' + m);
             if(localStorage.getItem(m) === 'true') {
                 card.classList.add('completed');
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
+            } else {
+                todasCompletas = false; // Si falta una, cambiamos el estado
             }
         });
 
-        if(missions.every(m => localStorage.getItem(m) === 'true')) {
-            document.getElementById('btn-final').classList.remove('hidden');
+        // 2. Si todas son true, quitamos la clase .hidden para mostrar el botón
+        if(todasCompletas) {
+            document.getElementById('btn-mision-final').classList.remove('hidden');
         }
 
         function reiniciarTablero() { 
-            if(confirm("¿Estás seguro de reiniciar todo el proceso?")) { 
+            if(confirm("¿Estás seguro de reiniciar todo el progreso?")) { 
                 localStorage.clear(); 
                 location.reload(); 
             } 
