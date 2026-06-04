@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 05 | Compromiso Final | GSM24</title>
+    <title>Misión 05 | Compromiso Final</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -19,7 +19,7 @@
             <div id="step1" class="step-card active">
                 <div style="border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px;">
                     <h3>⚠️ ATENCIÓN</h3>
-                    <p>Antes de proceder, es obligatorio leer el documento de lineamientos nacionales.</p>
+                    <p>Es obligatorio leer los lineamientos nacionales antes de continuar.</p>
                     <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm" style="background:var(--neon-blue); color:white;">LEER DOCUMENTO</button>
                 </div>
             </div>
@@ -28,7 +28,6 @@
                 <h2>EL COMPROMISO</h2>
                 <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
                 <button onclick="irA(3)" class="btn-confirm" style="background:var(--neon-green);">SÍ, ME COMPROMETO</button>
-                <button onclick="location.href='index.html'" style="background:transparent; color:#666; border:none; margin-top:10px;">Aún no estoy listo</button>
             </div>
 
             <div id="step3" class="step-card">
@@ -39,7 +38,7 @@
             </div>
 
             <div id="step4" class="step-card">
-                <div id="pdf-view" style="padding: 20px; background: white; color: black;">
+                <div id="pdf-view" style="padding: 20px; background: white; color: black; display: block;">
                     <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
                     <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
                     <p style="line-height:1.6;">
@@ -69,33 +68,41 @@
             const contenedor = document.getElementById('lista-nombres-pdf');
             contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre del integrante ${i}" class="input-name">`;
+                // Aquí volvemos a la lógica de input simple debajo del texto
+                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre integrante ${i}" class="input-name" style="border: 1px solid #ccc;">`;
             }
             irA(4);
         }
 
         function descargarPDF() {
-            // Clonamos el elemento de vista del PDF
-            const elemento = document.getElementById('pdf-view').cloneNode(true);
+            // Buscamos el elemento y forzamos su estilo para el PDF
+            const elemento = document.getElementById('pdf-view');
             
-            // Reemplazar inputs por texto estático en el clon para que el PDF los capture
-            const inputs = elemento.querySelectorAll('input');
+            // Creamos un contenedor temporal fuera de la vista para el PDF
+            const clon = elemento.cloneNode(true);
+            clon.style.display = "block";
+            clon.style.background = "white";
+            clon.style.color = "black";
+            
+            // Reemplazamos los inputs por texto fijo en el clon
+            const inputs = clon.querySelectorAll('input');
             inputs.forEach(input => {
                 const p = document.createElement('p');
-                p.style.borderBottom = "1px solid #000";
-                p.style.margin = "5px 0";
-                p.innerText = input.value || "__________________________";
+                p.innerHTML = "<b>Nombre:</b> " + (input.value || "__________________________");
+                p.style.padding = "5px 0";
                 input.parentNode.replaceChild(p, input);
             });
 
+            // Configuramos html2pdf
             const opt = {
                 margin: 15,
-                filename: 'Acta_Compromiso_GSM24.pdf',
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4' }
+                filename: 'Acta_Compromiso.pdf',
+                html2canvas: { scale: 2, useCORS: true, logging: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            
-            html2pdf().set(opt).from(elemento).save();
+
+            // Ejecutamos
+            html2pdf().set(opt).from(clon).save();
         }
 
         function finalizarMision() {
