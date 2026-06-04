@@ -2,19 +2,22 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Misión 02 | Navegación Scout | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para la navegación con brújula */
+        /* Estilos optimizados para móvil */
+        body { margin: 0; padding: 15px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 600px; margin: 0 auto; }
+        
         .compass-container {
-            position: relative; width: 180px; height: 180px; margin: 20px auto;
+            position: relative; width: 160px; height: 160px; margin: 20px auto;
             border: 6px solid #222; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
         }
         #aguja {
-            width: 10px; height: 140px;
+            width: 8px; height: 120px;
             background: linear-gradient(to bottom, var(--neon-red) 50%, #fff 50%);
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
             transition: transform 0.05s ease-out;
@@ -23,8 +26,8 @@
             background: #151515; padding: 15px; border-radius: 12px; margin: 10px 0; 
             border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; 
         }
-        .grados-val { font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); }
-        .check-btn { padding: 10px 20px; border-radius: 8px; background: #222; border: 2px solid #555; color: #555; cursor: pointer; font-weight: bold; }
+        .grados-val { font-size: 1.2rem; font-weight: bold; color: var(--neon-blue); }
+        .check-btn { padding: 12px 20px; border-radius: 8px; background: #222; border: 2px solid #555; color: #555; cursor: pointer; font-weight: bold; }
         .check-btn.active { background: var(--neon-green); color: #000; border: none; }
         .hidden { display: none; }
     </style>
@@ -33,22 +36,23 @@
     <div class="container">
         <div class="card m2-theme">
             <h2 style="color: var(--neon-blue);">MISIÓN 02: NAVEGACIÓN</h2>
-            <p>Utiliza la brújula para seguir los rumbos y marca cada paso.</p>
-
+            
             <div class="compass-container">
                 <div id="aguja"></div>
             </div>
-            <div id="display-grados" style="font-size: 2rem; color: var(--neon-blue); font-weight: bold;">0°</div>
+            <div id="display-grados" style="font-size: 2rem; color: var(--neon-blue); font-weight: bold; text-align: center;">0°</div>
 
-            <div id="lista-rumbos" style="margin: 20px 0;">
-                </div>
+            <p style="font-style: italic; color: #999; margin-top: 20px;">Para iniciar el rumbo al patrono debes mirar.</p>
+            <p>Utiliza la brújula para seguir los rumbos y marca cada paso.</p>
+
+            <div id="lista-rumbos" style="margin: 20px 0;"></div>
 
             <div id="seccion-clave" class="hidden">
-                <input type="text" id="clave-final" placeholder="Introduce la clave final...">
-                <button onclick="validarMision()" style="background: var(--neon-blue); color: black;">FINALIZAR MISIÓN</button>
+                <input type="text" id="clave-final" placeholder="Introduce la clave final..." style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+                <button onclick="validarMision()" style="width:100%; padding:15px; background: var(--neon-blue); color: black; border:none; border-radius:8px; font-weight:bold;">FINALIZAR MISIÓN</button>
             </div>
 
-            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:20px;">REGRESAR AL CENTRO</button>
+            <button onclick="location.href='index.html'" style="width:100%; padding:15px; background:transparent; border:1px solid #444; color:#666; margin-top:20px; border-radius:8px;">REGRESAR AL CENTRO</button>
         </div>
     </div>
 
@@ -58,7 +62,6 @@
         const rumbos = [145, 75, 300, 215, 23];
         let completados = 0;
 
-        // Lógica Brújula
         window.addEventListener("deviceorientation", (event) => {
             let alpha = event.alpha;
             if (alpha !== null) {
@@ -67,7 +70,6 @@
             }
         });
 
-        // Lógica Lista
         const container = document.getElementById('lista-rumbos');
         rumbos.forEach((g, index) => {
             container.innerHTML += `
@@ -77,26 +79,4 @@
                 </div>`;
         });
 
-        function marcar(btn, index) {
-            if(!btn.classList.contains('active')) {
-                btn.classList.add('active');
-                completados++;
-            }
-            if (completados === rumbos.length) {
-                document.getElementById('seccion-clave').classList.remove('hidden');
-            }
-        }
-
-        function validarMision() {
-            const clave = document.getElementById('clave-final').value.toLowerCase();
-            if(clave === "norte") { // Puedes cambiar la palabra clave aquí
-                localStorage.setItem('m2', 'true');
-                alert("¡Navegación completada con éxito!");
-                window.location.href = 'index.html';
-            } else {
-                alert("Clave incorrecta. Sigue buscando.");
-            }
-        }
-    </script>
-</body>
-</html>
+        function
