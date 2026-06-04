@@ -67,19 +67,19 @@
                 Espadas cual centellas<br>
                 Fulguran en Junín"<br><br>
                 Llega a ese lugar y la clave está en:<br>
-                <b>El scout es Limpio en pensamiento, palabra y obra.</b>
+                <b>el scout es limpio en pensamiento, palabra y obra.</b>
             </p>
-
-            <div class="canvas-container">
-                <div id="codigo-oculto">BADEN POWELL</div>
-                <canvas id="pista-canvas" width="300" height="300"></canvas>
-            </div>
 
             <input type="text" id="respuesta" class="input-box" placeholder="Escribe la clave...">
             
             <button onclick="validarRespuesta()" class="btn-action" style="background: var(--neon-green); color: black;">
                 VALIDAR RESPUESTA
             </button>
+
+            <div class="canvas-container">
+                <div id="codigo-oculto">BADEN POWELL</div>
+                <canvas id="pista-canvas" width="300" height="300"></canvas>
+            </div>
 
             <button onclick="location.href='index.html'" class="btn-action" style="background: transparent; border: 1px solid #444; color: #666;">
                 REGRESAR AL CENTRO
@@ -91,7 +91,7 @@
         const canvas = document.getElementById('pista-canvas');
         const ctx = canvas.getContext('2d');
         
-        // Dibujar niebla inicial (sin texto)
+        // Dibujar niebla inicial
         ctx.fillStyle = '#333';
         ctx.fillRect(0, 0, 300, 300);
 
