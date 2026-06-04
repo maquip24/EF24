@@ -2,117 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 02 | Brújula de Identidad | GSM24</title>
+    <title>Misión 02 | Navegación Scout | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para la Misión 2 */
-        .compass-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 30px auto;
-            border: 6px solid #222;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
-            box-shadow: 0 0 30px rgba(62, 139, 255, 0.2);
-        }
-
-        #aguja {
-            width: 12px;
-            height: 160px;
-            background: linear-gradient(to bottom, var(--neon-red) 50%, #fff 50%);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            transition: transform 0.05s ease-out;
-        }
-
-        .display-grados {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--neon-blue);
-            margin: 10px 0;
-            text-shadow: 0 0 10px rgba(62, 139, 255, 0.5);
-        }
-
-        .texto-narrativo {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #ccc;
-            margin-bottom: 25px;
-            padding: 15px;
-            border-left: 4px solid var(--neon-blue);
-            background: rgba(62, 139, 255, 0.05);
-            text-align: left;
-        }
+        .rumbo-card { background: #1a1a1a; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .grados-val { font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
+        .check-btn { padding: 15px 25px; border-radius: 10px; background: #222; border: 2px solid #555; color: #555; cursor: pointer; }
+        .check-btn.active { background: var(--neon-green); color: #000; border: none; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card m2-theme">
-            <h2 style="color: var(--neon-blue);">MISIÓN 02</h2>
-            
-            <div class="texto-narrativo">
-                El camino no siempre es recto, pero el Norte es inmutable.<br><br>
-                En la tormenta de la incertidumbre, la técnica es tu ancla 
-                y la brújula de tus valores es la que guía tus pasos.<br><br>
-                Alinea tu espíritu con el propósito de la Fase 1. 
-                Gira tu dispositivo, encuentra la dirección correcta (0°) y sella tu rumbo.
+        <div class="card">
+            <h2>MISIÓN 02: NAVEGACIÓN</h2>
+            <p>Sigue la ruta de grados. Completa cada punto para desbloquear la clave final.</p>
+
+            <div id="lista-rumbos">
+                </div>
+
+            <div id="seccion-clave" class="hidden">
+                <input type="text" id="clave-final" placeholder="Introduce la clave final...">
+                <button onclick="validarMision()" class="btn-validate">FINALIZAR MISIÓN</button>
             </div>
-
-            <div class="compass-container">
-                <div id="aguja"></div>
-            </div>
-
-            <div class="display-grados" id="display-grados">0°</div>
-            <p id="status-msg" style="color: #666; font-weight: bold; margin-bottom: 20px;">Busca el Norte (0°)</p>
-
-            <button id="btn-validar" onclick="validarMision()" disabled>SELLAR RUMBO</button>
-            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:10px;">REGRESAR AL CENTRO</button>
         </div>
     </div>
 
     <script>
-        const aguja = document.getElementById('aguja');
-        const displayGrados = document.getElementById('display-grados');
-        const btnValidar = document.getElementById('btn-validar');
-        const statusMsg = document.getElementById('status-msg');
+        const rumbos = [145, 75, 300, 215, 23];
+        let completados = 0;
 
-        function handleOrientation(event) {
-            let alpha = event.alpha; 
-            if (alpha === null) return;
+        function renderizarRumbos() {
+            const container = document.getElementById('lista-rumbos');
+            rumbos.forEach((g, index) => {
+                container.innerHTML += `
+                    <div class="rumbo-card" id="card-${index}">
+                        <span class="grados-val">${g}°</span>
+                        <button class="check-btn" onclick="marcar(${index})" id="btn-${index}">✓</button>
+                    </div>`;
+            });
+        }
 
-            // Rotar aguja
-            aguja.style.transform = `rotate(${-alpha}deg)`;
-            displayGrados.innerText = Math.round(alpha) + "°";
-
-            // Validar (Rango de 10 grados de tolerancia)
-            if (alpha > 350 || alpha < 10) {
-                statusMsg.innerText = "¡NORTE ENCONTRADO!";
-                statusMsg.style.color = "var(--neon-green)";
-                btnValidar.style.background = "var(--neon-green)";
-                btnValidar.style.color = "#000";
-                btnValidar.disabled = false;
-            } else {
-                statusMsg.innerText = "Busca el Norte (0°)";
-                statusMsg.style.color = "#666";
-                btnValidar.style.background = "#222";
-                btnValidar.style.color = "#555";
-                btnValidar.disabled = true;
+        function marcar(index) {
+            document.getElementById(`btn-${index}`).classList.add('active');
+            completados++;
+            if (completados === rumbos.length) {
+                document.getElementById('seccion-clave').classList.remove('hidden');
             }
         }
 
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", handleOrientation, true);
+        function validarMision() {
+            const clave = document.getElementById('clave-final').value.toLowerCase();
+            if(clave === "orientacion") { // Define aquí tu clave
+                localStorage.setItem('m2', 'true');
+                alert("¡Navegación completada con éxito!");
+                window.location.href = 'index.html';
+            } else {
+                alert("Clave incorrecta. Sigue buscando.");
+            }
         }
 
-        function validarMision() {
-            localStorage.setItem('m2', 'true');
-            alert("¡Rumbo sellado! Fase 1 completada.");
-            window.location.href = 'index.html';
-        }
+        renderizarRumbos();
     </script>
 </body>
 </html>
