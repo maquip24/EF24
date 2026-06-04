@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 05 | Compromiso Final</title>
+    <title>Misión 05 | Compromiso Final | GSM24</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; padding: 20px; }
@@ -38,9 +38,6 @@
 
         <div id="step4" class="step-card">
             <div id="pdf-view" style="padding: 20px; background: white; color: black;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="https://i.ibb.co/L09P1fB/logo-scout.png" style="max-width: 150px;" crossorigin="anonymous">
-                </div>
                 <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
                 <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
                 <p style="line-height:1.6;">
@@ -52,6 +49,7 @@
                 </p>
                 <div id="lista-nombres-pdf"></div>
             </div>
+            
             <button onclick="descargarPDF()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR ACTA (PDF)</button>
             <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
         </div>
@@ -79,10 +77,11 @@
             inputs.forEach(input => {
                 const p = document.createElement('p');
                 p.style.borderBottom = "1px solid #000";
+                p.style.padding = "5px";
                 p.innerText = input.getAttribute('value') || "________________";
                 input.parentNode.replaceChild(p, input);
             });
-            const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4' } };
+            const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
             html2pdf().set(opt).from(elemento).save();
         }
 
