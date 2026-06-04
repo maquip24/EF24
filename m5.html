@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión 05 | Compromiso Final | GSM24</title>
+    <title>Misión 05 | Compromiso Final</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -19,17 +18,15 @@
             <div id="step1" class="step-card active">
                 <div style="border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px;">
                     <h3>⚠️ ATENCIÓN</h3>
-                    <p>Es obligatorio leer los lineamientos nacionales antes de continuar.</p>
+                    <p>Es obligatorio leer los lineamientos.</p>
                     <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm" style="background:var(--neon-blue); color:white;">LEER DOCUMENTO</button>
                 </div>
             </div>
-
             <div id="step2" class="step-card">
                 <h2>EL COMPROMISO</h2>
                 <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
                 <button onclick="irA(3)" class="btn-confirm" style="background:var(--neon-green);">SÍ, ME COMPROMETO</button>
             </div>
-
             <div id="step3" class="step-card">
                 <h2>TU EQUIPO</h2>
                 <input type="number" id="teamSize" placeholder="Cantidad de personas" class="input-name">
@@ -37,7 +34,7 @@
             </div>
 
             <div id="step4" class="step-card">
-                <div id="pdf-view" style="padding: 20px;">
+                <div id="pdf-view" style="padding: 20px; background: white; color: black; display: block;">
                     <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
                     <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
                     <p style="line-height:1.6;">
@@ -73,20 +70,23 @@
         }
 
         function descargarPDF() {
-            // Clonar el bloque para el PDF
+            // Clonamos el elemento y forzamos estilos visibles
             const elemento = document.getElementById('pdf-view').cloneNode(true);
-            
-            // Reemplazar inputs por texto simple
+            elemento.style.display = "block"; 
+            elemento.style.color = "black";
+            elemento.style.background = "white";
+
             const inputs = elemento.querySelectorAll('input');
             inputs.forEach(input => {
                 const p = document.createElement('p');
                 p.style.borderBottom = "1px solid #000";
-                p.innerText = input.value;
+                p.style.padding = "5px";
+                p.innerText = input.value || "__________________________";
                 input.parentNode.replaceChild(p, input);
             });
 
             const opt = {
-                margin: 15,
+                margin: 10,
                 filename: 'Acta_Compromiso_GSM24.pdf',
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4' }
