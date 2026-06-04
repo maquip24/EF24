@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GSM24 | Centro de Operaciones</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,74 +11,27 @@
             <h1>CENTRO DE MANDO GSM24</h1>
             <p style="color: #666;">Escuela de Formación Carlos Quiroga</p>
         </header>
-
         <div class="grid-single">
-            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'">
-                <h3>MISIÓN 1</h3>
-                <p>El Porqué</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'">
-                <h3>MISIÓN 2</h3>
-                <p>Fase 1</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'">
-                <h3>MISIÓN 3</h3>
-                <p>Fase 2</p>
-                <span class="status">PENDIENTE</span>
-            </div>
-            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'">
-                <h3>MISIÓN 4</h3>
-                <p>Fase 3</p>
-                <span class="status">PENDIENTE</span>
-            </div>
+            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'"><h3>MISIÓN 1</h3><p>El Porqué</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>Fase 1</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>Fase 2</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>Fase 3</p><span class="status">PENDIENTE</span></div>
         </div>
-
-        <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
-            ACCEDER A LA MISIÓN FINAL
-        </button>
-
-        <button onclick="reiniciarTablero()" style="width: 100%; padding: 15px; margin-top: 15px; border-radius: 15px; background: transparent; border: 1px solid #444; color: #666; cursor: pointer; font-size: 0.8rem;">
-            REINICIAR TABLERO
-        </button>
+        <button id="final-btn" onclick="location.href='m5.html'" disabled>ACCEDER AL COMPROMISO FINAL</button>
+        <button onclick="reiniciarTablero()" style="width:100%; padding:10px; margin-top:20px; background:transparent; border:1px solid #444; color:#666; cursor:pointer;">REINICIAR TABLERO</button>
     </div>
-
     <script>
         const missions = ['m1', 'm2', 'm3', 'm4'];
         let todasCompletas = true;
-
-        // Verificar estado de cada misión
         missions.forEach(m => {
-            const estado = localStorage.getItem(m);
             const card = document.getElementById('card-' + m);
-            
-            if(estado === 'true') {
+            if(localStorage.getItem(m) === 'true') {
                 card.classList.add('completed');
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
-            } else {
-                todasCompletas = false;
-            }
+            } else { todasCompletas = false; }
         });
-
-        // Habilitar botón si todas están en 'true'
-        const finalBtn = document.getElementById('final-btn');
-        if(todasCompletas) {
-            finalBtn.disabled = false;
-            finalBtn.style.opacity = "1";
-            finalBtn.style.cursor = "pointer";
-        } else {
-            finalBtn.disabled = true;
-            finalBtn.style.opacity = "0.5";
-            finalBtn.style.cursor = "not-allowed";
-        }
-
-        function reiniciarTablero() {
-            if(confirm("¿Estás seguro de que deseas reiniciar todo el progreso?")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
+        if(todasCompletas) document.getElementById('final-btn').disabled = false;
+        function reiniciarTablero() { if(confirm("¿Reiniciar todo?")) { localStorage.clear(); location.reload(); } }
     </script>
 </body>
 </html>
