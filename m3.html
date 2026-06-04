@@ -2,52 +2,72 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Misión 03 | Seguimiento de Pista</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSM24 | Centro de Operaciones</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        #pista-canvas { background: #111; border: 2px solid #3eff8b; cursor: crosshair; touch-action: none; }
-    </style>
 </head>
 <body>
     <div class="container">
-        <div class="card m3-theme">
-            <h2>MISIÓN 03</h2>
-            <p>Sigue la pista de la "Formación Básica" para asegurar el éxito del programa.</p>
-            <canvas id="pista-canvas" width="300" height="300"></canvas>
-            <p id="progreso">Pista oculta: 0%</p>
-            <button id="btnValidar" onclick="validar()" disabled>FINALIZAR SEGUIMIENTO</button>
+        <header style="margin-bottom: 30px;">
+            <h1>CENTRO DE MANDO GSM24</h1>
+            <p style="color: #666;">Escuela de Formación Carlos Quiroga</p>
+        </header>
+
+        <div class="grid-single">
+            <div class="mission-card m1-theme" id="card-m1" onclick="location.href='m1.html'">
+                <h3>MISIÓN 1</h3>
+                <p>El Porqué</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card m2-theme" id="card-m2" onclick="location.href='m2.html'">
+                <h3>MISIÓN 2</h3>
+                <p>Fase 1</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card m3-theme" id="card-m3" onclick="location.href='m3.html'">
+                <h3>MISIÓN 3</h3>
+                <p>Fase 2</p>
+                <span class="status">PENDIENTE</span>
+            </div>
+            <div class="mission-card m4-theme" id="card-m4" onclick="location.href='m4.html'">
+                <h3>MISIÓN 4</h3>
+                <p>Fase 3</p>
+                <span class="status">PENDIENTE</span>
+            </div>
         </div>
+
+        <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
+            ACCEDER AL COMPROMISO FINAL
+        </button>
+
+        <button onclick="reiniciarTablero()" style="width: 100%; padding: 15px; margin-top: 15px; border-radius: 15px; background: transparent; border: 1px solid #444; color: #666; cursor: pointer; font-size: 0.8rem;">
+            REINICIAR TABLERO
+        </button>
     </div>
 
     <script>
-        const canvas = document.getElementById('pista-canvas');
-        const ctx = canvas.getContext('2d');
-        let completado = 0;
-
-        // Dibujar el camino oculto
-        ctx.fillStyle = '#555';
-        ctx.fillRect(0, 0, 300, 300);
-        ctx.fillStyle = '#3eff8b';
-        ctx.font = '20px sans-serif';
-        ctx.fillText("SIGUE LAS HUELLAS...", 50, 150);
-
-        canvas.addEventListener('touchmove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.touches[0].clientX - rect.left;
-            const y = e.touches[0].clientY - rect.top;
-            
-            ctx.clearRect(x - 20, y - 20, 40, 40);
-            completado++;
-            
-            if(completado > 500) {
-                document.getElementById('progreso').innerText = "¡PISTA ENCONTRADA!";
-                document.getElementById('btnValidar').disabled = false;
+        const missions = ['m1', 'm2', 'm3', 'm4', 'm5'];
+        missions.forEach(m => {
+            if(localStorage.getItem(m) === 'true') {
+                const card = document.getElementById('card-' + m);
+                if(card) {
+                    card.classList.add('completed');
+                    card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
+                }
             }
         });
 
-        function validar() {
-            localStorage.setItem('m3', 'true');
-            window.location.href = 'index.html';
+        // Habilitar acceso final solo si todas están completas
+        if(missions.every(m => localStorage.getItem(m) === 'true')) {
+            document.getElementById('final-btn').disabled = false;
+        }
+
+        // Función de reinicio
+        function reiniciarTablero() {
+            if(confirm("¿Estás seguro de que deseas reiniciar todo el progreso?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
     </script>
 </body>
