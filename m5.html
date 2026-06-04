@@ -2,48 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Misión 05 | Compromiso Final | GSM24</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: sans-serif; background: #000; color: #fff; padding: 20px; }
+        body { font-family: sans-serif; background: #000; color: #fff; margin: 0; padding: 15px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .step-card { display: none; }
         .active { display: block; }
-        .input-name { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; box-sizing: border-box; }
-        .btn-confirm { width: 100%; padding: 15px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
+        /* Ajustes de legibilidad y botones para móvil */
+        .card-content { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .input-name { width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; box-sizing: border-box; font-size: 16px; }
+        .btn-confirm { width: 100%; padding: 18px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; }
+        h2, h3 { color: var(--neon-yellow, #f1c40f); }
+        p { line-height: 1.5; font-size: 16px; color: #ddd; }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="step1" class="step-card active">
-            <div style="border: 3px solid #ff4444; padding: 20px; border-radius: 15px; background: rgba(255, 68, 68, 0.1);">
+            <div class="card-content" style="border: 2px solid #ff4444; background: rgba(255, 68, 68, 0.05);">
                 <h3 style="color: #ff4444;">⚠️ ATENCIÓN</h3>
-                <p>Antes de proceder, es obligatorio leer el documento de lineamientos nacionales.</p>
+                <p>Es obligatorio leer el documento de lineamientos nacionales.</p>
                 <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm" style="background:#007bff; color:white;">LEER DOCUMENTO</button>
             </div>
         </div>
 
         <div id="step2" class="step-card">
-            <h2>EL COMPROMISO</h2>
-            <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
-            <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, ME COMPROMETO</button>
-            <button onclick="location.href='index.html'" style="background:transparent; color:#666; border:none; margin-top:10px;">Aún no estoy listo</button>
+            <div class="card-content">
+                <h2>EL COMPROMISO</h2>
+                <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
+                <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, ME COMPROMETO</button>
+                <button onclick="location.href='index.html'" style="background:transparent; color:#666; border:none; margin-top:15px; width:100%;">Aún no estoy listo</button>
+            </div>
         </div>
 
         <div id="step3" class="step-card">
-            <h2>TU EQUIPO</h2>
-            <p>¿Cuántas personas integran tu equipo hoy?</p>
-            <input type="number" id="teamSize" placeholder="Cantidad de personas" class="input-name">
-            <button onclick="generarFormulario()" class="btn-confirm" style="background:#ffc107; color:black;">CONTINUAR</button>
+            <div class="card-content">
+                <h2>TU EQUIPO</h2>
+                <p>¿Cuántas personas integran tu equipo hoy?</p>
+                <input type="number" id="teamSize" placeholder="Ej: 3" class="input-name">
+                <button onclick="generarFormulario()" class="btn-confirm" style="background:#ffc107; color:black;">CONTINUAR</button>
+            </div>
         </div>
 
         <div id="step4" class="step-card">
-            <div id="pdf-view" style="padding: 20px; background: white; color: black;">
-                <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
+            <div id="pdf-view" style="padding: 20px; background: white; color: black; border-radius: 5px;">
+                <h1 style="text-align:center; font-size: 20px;">ACTA DE COMPROMISO GSM24</h1>
                 <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
-                <p style="line-height:1.6;">
+                <p style="line-height:1.6; font-size: 14px;">
                     Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
-                    prometiendo participar de los encuentros, talleres, cursos que me permitan avanzar en mi función como adulto voluntario 
-                    y de esta manera la búsqueda constante de la excelencia. 
+                    prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario.
                     <br><br>
                     <b>"Uno para Todos y Todos para Uno"</b>
                 </p>
@@ -66,7 +76,7 @@
             const contenedor = document.getElementById('lista-nombres-pdf');
             contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                contenedor.innerHTML += `<input type="text" id="name-${i}" placeholder="Nombre integrante ${i}" class="input-name" oninput="this.setAttribute('value', this.value);">`;
+                contenedor.innerHTML += `<input type="text" class="input-name" placeholder="Nombre integrante ${i}" oninput="this.setAttribute('value', this.value);">`;
             }
             irA(4);
         }
@@ -77,11 +87,12 @@
             inputs.forEach(input => {
                 const p = document.createElement('p');
                 p.style.borderBottom = "1px solid #000";
-                p.style.padding = "5px";
-                p.innerText = input.getAttribute('value') || "________________";
+                p.style.margin = "10px 0";
+                p.style.fontSize = "14px";
+                p.innerText = input.getAttribute('value') || "__________________________";
                 input.parentNode.replaceChild(p, input);
             });
-            const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
+            const opt = { margin: 10, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
             html2pdf().set(opt).from(elemento).save();
         }
 
