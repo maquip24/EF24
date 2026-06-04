@@ -39,19 +39,35 @@
         <button id="final-btn" class="final-gate" onclick="location.href='m5.html'" disabled>
             ACCEDER AL COMPROMISO FINAL
         </button>
+
+        <button onclick="reiniciarTablero()" style="width: 100%; padding: 15px; margin-top: 15px; border-radius: 15px; background: transparent; border: 1px solid #444; color: #666; cursor: pointer; font-size: 0.8rem;">
+            REINICIAR TABLERO
+        </button>
     </div>
 
     <script>
-        const missions = ['m1', 'm2', 'm3', 'm4'];
+        const missions = ['m1', 'm2', 'm3', 'm4', 'm5'];
         missions.forEach(m => {
             if(localStorage.getItem(m) === 'true') {
                 const card = document.getElementById('card-' + m);
-                card.classList.add('completed');
-                card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
+                if(card) {
+                    card.classList.add('completed');
+                    card.querySelector('.status').innerHTML = 'COMPLETADO ✓';
+                }
             }
         });
+
+        // Habilitar acceso final solo si todas están completas
         if(missions.every(m => localStorage.getItem(m) === 'true')) {
             document.getElementById('final-btn').disabled = false;
+        }
+
+        // Función de reinicio
+        function reiniciarTablero() {
+            if(confirm("¿Estás seguro de que deseas reiniciar todo el progreso?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
     </script>
 </body>
