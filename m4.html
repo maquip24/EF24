@@ -2,50 +2,84 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misión 04 | Gobernanza | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .counter { font-size: 3rem; color: var(--neon-yellow); margin: 20px 0; }
-        .morse-btn { width: 150px; height: 150px; border-radius: 50%; background: #222; border: 5px solid var(--neon-yellow); color: var(--neon-yellow); font-size: 1.5rem; cursor: pointer; }
+        .morse-container {
+            background: #111; padding: 20px; border-radius: 15px;
+            border: 1px solid #333; margin: 20px 0; text-align: center;
+        }
+        .signal-box {
+            font-size: 2rem; color: var(--neon-yellow);
+            letter-spacing: 15px; margin: 15px 0; min-height: 50px;
+        }
+        .morse-btn {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: #222; border: 4px solid var(--neon-yellow);
+            color: var(--neon-yellow); font-weight: bold; cursor: pointer;
+            transition: 0.2s;
+        }
+        .morse-btn:active { background: var(--neon-yellow); color: #000; }
+        .input-box {
+            width: 100%; padding: 15px; margin: 15px 0; border-radius: 10px;
+            border: 1px solid #444; background: #111; color: white;
+            text-align: center; font-size: 1rem; text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card m4-theme">
-            <h2>MISIÓN 04: GOBERNANZA</h2>
-            <p>Emite 3 señales cortas para la letra <b>S</b> (...)</p>
+            <h2 style="color: var(--neon-yellow);">MISIÓN 04: GOBERNANZA</h2>
             
-            <div class="counter" id="display">0 / 3</div>
+            <p style="font-size: 0.9rem; color: #aaa;">
+                La Gobernanza es el ritmo que sostiene nuestra estructura.<br>
+                <b>Transmite la señal de mando "PAZ" (.--. .- --..)</b>
+            </p>
+
+            <div class="morse-container">
+                <div class="signal-box" id="display">...</div>
+                <button class="morse-btn" id="transmitter">TAP</button>
+            </div>
+
+            <input type="text" id="respuesta" class="input-box" placeholder="Escribe la clave final...">
             
-            <button class="morse-btn" id="transmitter" onclick="registrarClic()">TAP</button>
-            
-            <br><br>
-            <button id="btnValidar" onclick="validarMision()" disabled>VALIDAR GOBERNANZA</button>
-            <br>
-            <a href="index.html" style="color:#555; display:block; margin-top:20px;">Volver al Centro de Mando</a>
+            <button onclick="validarMision()" style="width:100%; padding:15px; background: var(--neon-yellow); color: black; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">
+                VALIDAR GOBERNANZA
+            </button>
+
+            <button onclick="location.href='index.html'" style="width:100%; background:transparent; border:1px solid #444; color:#666; margin-top:20px; padding:15px; border-radius:10px; cursor:pointer;">
+                REGRESAR AL CENTRO
+            </button>
         </div>
     </div>
 
     <script>
-        let contador = 0;
-        function registrarClic() {
-            contador++;
-            document.getElementById('display').innerText = contador + " / 3";
-            
-            if (contador === 3) {
-                document.getElementById('display').innerText = "SEÑAL LISTA!";
-                document.getElementById('display').style.color = "var(--neon-green)";
-                document.getElementById('btnValidar').disabled = false;
-            } else if (contador > 3) {
-                contador = 0;
-                document.getElementById('display').innerText = "0 / 3";
-                document.getElementById('display').style.color = "var(--neon-yellow)";
-            }
-        }
+        const display = document.getElementById('display');
+        const transmitter = document.getElementById('transmitter');
+        let signal = "";
+
+        // Lógica Morse simple: Punto si es corto, Raya si es largo
+        let startTime;
+        transmitter.addEventListener('mousedown', () => startTime = Date.now());
+        transmitter.addEventListener('mouseup', () => {
+            const duration = Date.now() - startTime;
+            signal += (duration < 300) ? "." : "-";
+            display.innerText = signal;
+            if(signal.length > 8) signal = ""; // Reset si se pasa
+        });
 
         function validarMision() {
-            localStorage.setItem('m4', 'true');
-            window.location.href = 'index.html';
+            const clave = document.getElementById('respuesta').value.toLowerCase();
+            // La clave secreta de gobernanza
+            if(clave === "estructura") {
+                localStorage.setItem('m4', 'true');
+                alert("¡Señal recibida y estructura confirmada!");
+                window.location.href = 'index.html';
+            } else {
+                alert("Clave incorrecta. La gobernanza requiere precisión.");
+            }
         }
     </script>
 </body>
