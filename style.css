@@ -1,54 +1,81 @@
-:root {
-    --bg: #050505;
-    --neon-red: #ff3e3e;
-    --neon-blue: #3e8bff;
-    --neon-green: #3eff8b;
-    --neon-yellow: #f3ff3e;
-    --text-color: #ffffff;
+/* Base y Estructura */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-body { 
-    background-color: var(--bg); 
-    color: var(--text-color); 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    margin: 0; 
+.container {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    display: flex; 
-    justify-content: center; 
-    min-height: 100vh; 
 }
 
-.container { width: 100%; max-width: 450px; text-align: center; }
-
-/* REJILLA DE UNA SOLA COLUMNA */
-.grid-single { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 15px; 
-    margin: 20px 0; 
+/* Tarjetas de Misión */
+.grid-single {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.mission-card { 
-    height: 100px; /* Tarjetas más compactas pero anchas */
-    border-radius: 15px; 
-    border: 2px solid #333; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    cursor: pointer; 
+.mission-card {
     background: #111;
-    transition: all 0.3s ease;
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
 }
 
-.mission-card h3 { margin: 0; font-size: 1.1rem; }
-.mission-card p { margin: 2px 0; font-size: 0.9rem; opacity: 0.7; }
-.status { font-size: 0.7rem; font-weight: bold; margin-top: 5px; }
-
-.mission-card.completed { border-color: var(--neon-green) !important; background: #0a1a10 !important; }
-
-.final-gate { 
-    width: 100%; padding: 20px; border-radius: 15px; 
-    background: #222; border: 2px solid #555; 
-    color: white; font-weight: bold; cursor: pointer; margin-top: 20px;
+.mission-card:hover {
+    border-color: var(--neon-yellow);
+    transform: translateY(-5px);
 }
-.final-gate:not(:disabled) { background: var(--neon-green); color: #000; border: none; }
+
+/* Estado de Completado */
+.mission-card.completed {
+    border-color: var(--neon-green);
+    background: #0a1a0a;
+}
+
+.status {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.mission-card.completed .status {
+    color: var(--neon-green);
+    font-weight: bold;
+}
+
+/* Variables de Color (Neon) */
+:root {
+    --neon-yellow: #f1c40f;
+    --neon-green: #2ecc71;
+    --neon-red: #e74c3c;
+    --neon-blue: #3498db;
+}
+
+/* Responsividad para Celular (CRÍTICO) */
+@media (max-width: 600px) {
+    .grid-single {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .mission-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
