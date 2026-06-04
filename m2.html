@@ -2,50 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misión 02 | Navegación Scout | GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .rumbo-card { background: #1a1a1a; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .grados-val { font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
-        .check-btn { padding: 15px 25px; border-radius: 10px; background: #222; border: 2px solid #555; color: #555; cursor: pointer; }
+        /* Estilos específicos para la navegación con brújula */
+        .compass-container {
+            position: relative; width: 180px; height: 180px; margin: 20px auto;
+            border: 6px solid #222; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+        }
+        #aguja {
+            width: 10px; height: 140px;
+            background: linear-gradient(to bottom, var(--neon-red) 50%, #fff 50%);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transition: transform 0.05s ease-out;
+        }
+        .rumbo-card { 
+            background: #151515; padding: 15px; border-radius: 12px; margin: 10px 0; 
+            border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; 
+        }
+        .grados-val { font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); }
+        .check-btn { padding: 10px 20px; border-radius: 8px; background: #222; border: 2px solid #555; color: #555; cursor: pointer; font-weight: bold; }
         .check-btn.active { background: var(--neon-green); color: #000; border: none; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <h2>MISIÓN 02: NAVEGACIÓN</h2>
-            <p>Sigue la ruta de grados. Completa cada punto para desbloquear la clave final.</p>
+        <div class="card m2-theme">
+            <h2 style="color: var(--neon-blue);">MISIÓN 02: NAVEGACIÓN</h2>
+            <p>Utiliza la brújula para seguir los rumbos y marca cada paso.</p>
 
-            <div id="lista-rumbos">
+            <div class="compass-container">
+                <div id="aguja"></div>
+            </div>
+            <div id="display-grados" style="font-size: 2rem; color: var(--neon-blue); font-weight: bold;">0°</div>
+
+            <div id="lista-rumbos" style="margin: 20px 0;">
                 </div>
 
             <div id="seccion-clave" class="hidden">
                 <input type="text" id="clave-final" placeholder="Introduce la clave final...">
-                <button onclick="validarMision()" class="btn-validate">FINALIZAR MISIÓN</button>
+                <button onclick="validarMision()" style="background: var(--neon-blue); color: black;">FINALIZAR MISIÓN</button>
             </div>
+
+            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:20px;">REGRESAR AL CENTRO</button>
         </div>
     </div>
 
     <script>
+        const aguja = document.getElementById('aguja');
+        const displayGrados = document.getElementById('display-grados');
         const rumbos = [145, 75, 300, 215, 23];
         let completados = 0;
 
-        function renderizarRumbos() {
-            const container = document.getElementById('lista-rumbos');
-            rumbos.forEach((g, index) => {
-                container.innerHTML += `
-                    <div class="rumbo-card" id="card-${index}">
-                        <span class="grados-val">${g}°</span>
-                        <button class="check-btn" onclick="marcar(${index})" id="btn-${index}">✓</button>
-                    </div>`;
-            });
-        }
+        // Lógica Brújula
+        window.addEventListener("deviceorientation", (event) => {
+            let alpha = event.alpha;
+            if (alpha !== null) {
+                aguja.style.transform = `rotate(${-alpha}deg)`;
+                displayGrados.innerText = Math.round(alpha) + "°";
+            }
+        });
 
-        function marcar(index) {
-            document.getElementById(`btn-${index}`).classList.add('active');
-            completados++;
+        // Lógica Lista
+        const container = document.getElementById('lista-rumbos');
+        rumbos.forEach((g, index) => {
+            container.innerHTML += `
+                <div class="rumbo-card">
+                    <span class="grados-val">Rumbo: ${g}°</span>
+                    <button class="check-btn" onclick="marcar(this, ${index})" id="btn-${index}">✓</button>
+                </div>`;
+        });
+
+        function marcar(btn, index) {
+            if(!btn.classList.contains('active')) {
+                btn.classList.add('active');
+                completados++;
+            }
             if (completados === rumbos.length) {
                 document.getElementById('seccion-clave').classList.remove('hidden');
             }
@@ -53,7 +89,7 @@
 
         function validarMision() {
             const clave = document.getElementById('clave-final').value.toLowerCase();
-            if(clave === "orientacion") { // Define aquí tu clave
+            if(clave === "norte") { // Puedes cambiar la palabra clave aquí
                 localStorage.setItem('m2', 'true');
                 alert("¡Navegación completada con éxito!");
                 window.location.href = 'index.html';
@@ -61,8 +97,6 @@
                 alert("Clave incorrecta. Sigue buscando.");
             }
         }
-
-        renderizarRumbos();
     </script>
 </body>
 </html>
