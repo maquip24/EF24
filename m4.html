@@ -15,10 +15,8 @@
             letter-spacing: 10px; margin: 15px 0; min-height: 50px;
             word-wrap: break-word;
         }
-        /* Botón de reinicio debajo del signal-box */
         .restart-btn {
-            margin: 15px auto; 
-            display: block;
+            margin: 15px auto; display: block;
             background: transparent; border: 1px solid #444; color: #666; 
             padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.7rem;
         }
@@ -26,7 +24,8 @@
             width: 140px; height: 140px; border-radius: 50%;
             background: #222; border: 4px solid var(--neon-yellow);
             color: var(--neon-yellow); font-weight: bold; cursor: pointer;
-            transition: 0.2s; font-size: 1.2rem;
+            transition: 0.1s; font-size: 1.2rem;
+            -webkit-tap-highlight-color: transparent; /* Evita destello azul en móvil */
         }
         .morse-btn:active { background: var(--neon-yellow); color: #000; transform: scale(0.95); }
     </style>
@@ -43,15 +42,11 @@
 
             <div class="morse-container">
                 <div class="signal-box" id="display">_</div>
-                
-                <button onclick="reiniciarSenal()" class="restart-btn">
-                    REINICIAR SEÑAL
-                </button>
-                
+                <button onclick="reiniciarSenal()" class="restart-btn">REINICIAR SEÑAL</button>
                 <button class="morse-btn" id="transmitter">TAP</button>
             </div>
 
-            <p id="status" style="font-size: 0.8rem; color: #666;">Mantén presionado para raya, toque corto para punto.</p>
+            <p id="status" style="font-size: 0.8rem; color: #666;">Toca breve para punto, mantén para raya.</p>
 
             <button onclick="location.href='index.html'" style="width:100%; background:transparent; border:1px solid #444; color:#666; margin-top:20px; padding:15px; border-radius:10px; cursor:pointer;">
                 REGRESAR AL CENTRO
@@ -67,30 +62,43 @@
         const targetSignal = ".--..---.."; 
         let signal = "";
         let startTime;
+        let isProcessing = false; // Bloqueo para evitar doble entrada
 
-        transmitter.addEventListener('mousedown', () => startTime = Date.now());
-        transmitter.addEventListener('touchstart', () => startTime = Date.now());
+        function start(e) {
+            e.preventDefault();
+            startTime = Date.now();
+        }
 
-        transmitter.addEventListener('mouseup', endSignal);
-        transmitter.addEventListener('touchend', endSignal);
-
-        function endSignal() {
+        function end(e) {
+            e.preventDefault();
+            if (!startTime) return;
+            
             const duration = Date.now() - startTime;
+            startTime = null; // Reset
+
+            // Filtrar toques fantasma (menos de 50ms)
+            if (duration < 50) return;
+
             signal += (duration < 300) ? "." : "-";
             display.innerText = signal;
 
+            // Validación
             if (signal === targetSignal) {
                 localStorage.setItem('m4', 'true');
-                status.innerText = "¡SEÑAL TRANSMITIDA! GOBERNANZA CONFIRMADA.";
+                status.innerText = "¡SEÑAL TRANSMITIDA!";
                 status.style.color = "var(--neon-green)";
                 alert("¡Señal de Gobernanza aceptada! Misión cumplida.");
-                setTimeout(() => window.location.href = 'index.html', 1000);
-            } 
-            else if (signal.length >= targetSignal.length) {
-                reiniciarSenal();
-                status.innerText = "Error: Secuencia incorrecta, reiniciando.";
+                setTimeout(() => window.location.href = 'index.html', 500);
+            } else if (signal.length >= targetSignal.length) {
+                status.innerText = "Error: Secuencia incorrecta, reiniciando...";
+                setTimeout(reiniciarSenal, 500);
             }
         }
+
+        transmitter.addEventListener('mousedown', start);
+        transmitter.addEventListener('mouseup', end);
+        transmitter.addEventListener('touchstart', start, {passive: false});
+        transmitter.addEventListener('touchend', end, {passive: false});
 
         function reiniciarSenal() {
             signal = "";
