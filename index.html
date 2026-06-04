@@ -2,23 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Centro de Mando GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .btn-ready { display: block; width: 90%; margin: 20px auto; padding: 20px; background: var(--neon-green); color: black; font-weight: bold; font-size: 1.2rem; border-radius: 15px; text-align: center; text-decoration: none; border: none; box-shadow: 0 0 15px var(--neon-green); }
         .hidden { display: none; }
+        .btn-ready { 
+            display: block; width: 90%; margin: 20px auto; padding: 20px; 
+            background: var(--neon-green); color: black; font-weight: bold; 
+            font-size: 1.2rem; border-radius: 15px; text-align: center; 
+            text-decoration: none; border: none; box-shadow: 0 0 15px var(--neon-green); 
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>CENTRO DE MANDO GSM24</h1>
-        <a href="m5.html" id="btn-final" class="btn-ready hidden">ACCEDER AL COMPROMISO FINAL</a>
+        <header style="margin-bottom: 30px;">
+            <h1>CENTRO DE MANDO GSM24</h1>
+            <p>Escuela de Formación Carlos Quiroga</p>
+        </header>
+
+        <div class="grid-single">
+            <!-- Misiones 1 a 4 con su lógica original -->
+            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'"><h3>MISIÓN 1</h3><p>El porqué de la escuela</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>Fase 1</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>Fase 2</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>Fase 3</p><span class="status">PENDIENTE</span></div>
+        </div>
+
+        <!-- Botón de Acceso Final -->
+        <a href="m5.html" id="btn-final" class="btn-ready hidden">ACCEDER AL COMPROMISO FINAL (MISIÓN 5)</a>
         
-        <button onclick="reiniciarTablero()" style="margin-top:20px; background:transparent; color:#666;">REINICIAR TABLERO</button>
+        <button onclick="reiniciarTablero()" style="width:100%; padding:10px; margin-top:20px; background:transparent; border:1px solid #444; color:#666; cursor:pointer;">REINICIAR TABLERO</button>
     </div>
+
     <script>
+        // Lógica de estado original
         const missions = ['m1', 'm2', 'm3', 'm4'];
+        missions.forEach(m => {
+            const card = document.getElementById('card-' + m);
+            if(localStorage.getItem(m) === 'true') {
+                card.classList.add('completed');
+                card.querySelector('.status').innerText = 'COMPLETADO ✓';
+            }
+        });
+
+        // Lógica de visibilidad del botón final (solo si todas son true)
         if(missions.every(m => localStorage.getItem(m) === 'true')) {
             document.getElementById('btn-final').classList.remove('hidden');
+        }
+
+        function reiniciarTablero() { 
+            if(confirm("¿Estás seguro de reiniciar todo el proceso?")) { 
+                localStorage.clear(); 
+                location.reload(); 
+            } 
         }
     </script>
 </body>
