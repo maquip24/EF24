@@ -13,7 +13,6 @@
             margin: 20px auto;
             border: 4px solid #333;
             border-radius: 15px;
-            /* Fondo donde está escrito BADEN POWELL */
             background: #000;
             display: flex;
             justify-content: center;
@@ -28,10 +27,18 @@
             touch-action: none;
         }
         #codigo-oculto {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--neon-green);
-            letter-spacing: 2px;
+            text-align: center;
+            padding: 10px;
+        }
+        #input-area {
+            margin-top: 20px;
+            padding: 20px;
+            background: #111;
+            border-radius: 15px;
+            display: none; /* Oculto inicialmente */
         }
     </style>
 </head>
@@ -39,47 +46,50 @@
     <div class="container">
         <div class="card m3-theme">
             <h2 style="color: var(--neon-green);">MISIÓN 03: RASTREO</h2>
-            
-            <p>Limpia la niebla para revelar el nombre del fundador.</p>
+            <p>Limpia la niebla para revelar el código oculto y úsalo para completar la misión.</p>
 
             <div class="canvas-container">
                 <div id="codigo-oculto">BADEN POWELL</div>
                 <canvas id="pista-canvas" width="300" height="300"></canvas>
             </div>
 
-            <div id="input-area" style="display:none;">
-                <input type="text" id="respuesta" placeholder="Escribe el nombre revelado..." style="text-transform: uppercase;">
-                <button onclick="validarRespuesta()" style="background: var(--neon-green); color: black;">VALIDAR RASTREO</button>
+            <div id="input-area">
+                <input type="text" id="respuesta" placeholder="Escribe la clave final..." style="text-transform: uppercase;">
+                <button onclick="validarRespuesta()" style="background: var(--neon-green); color: black; margin-top: 10px;">VALIDAR RESPUESTA</button>
             </div>
 
-            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:15px;">REGRESAR AL CENTRO</button>
+            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #444; color:#666; margin-top:20px;">REGRESAR AL CENTRO</button>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('pista-canvas');
         const ctx = canvas.getContext('2d');
+        const inputArea = document.getElementById('input-area');
         
-        // Dibujar la niebla (capa superior)
+        // Dibujar niebla inicial
         ctx.fillStyle = '#333';
         ctx.fillRect(0, 0, 300, 300);
-        ctx.fillStyle = '#666';
+        ctx.fillStyle = '#aaa';
+        ctx.font = '20px Arial';
         ctx.textAlign = 'center';
         ctx.fillText("DESLIZA AQUÍ", 150, 150);
 
         let pixelsLimpiados = 0;
-        const totalThreshold = 2000; // Sensibilidad de limpieza
+        const umbral = 1500; // Sensibilidad de limpieza
 
         function limpiar(e) {
             const rect = canvas.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
             const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
             
-            ctx.clearRect(x - 25, y - 25, 50, 50);
+            ctx.clearRect(x - 30, y - 30, 60, 60);
             
             pixelsLimpiados++;
-            if (pixelsLimpiados > totalThreshold) {
-                document.getElementById('input-area').style.display = 'block';
+            
+            // Si supera el umbral, mostramos el campo de respuesta
+            if (pixelsLimpiados > umbral) {
+                inputArea.style.display = 'block';
             }
         }
 
@@ -87,13 +97,14 @@
         canvas.addEventListener('touchmove', limpiar);
 
         function validarRespuesta() {
-            const resp = document.getElementById('respuesta').value.toUpperCase();
-            if(resp === "BADEN POWELL") {
+            const resp = document.getElementById('respuesta').value.toLowerCase();
+            // La clave requerida es "formarnos"
+            if(resp === "formarnos") {
                 localStorage.setItem('m3', 'true');
-                alert("¡Rastreo exitoso, Scout!");
+                alert("¡Clave correcta! Misión completada.");
                 window.location.href = 'index.html';
             } else {
-                alert("Nombre incorrecto. ¡Sigue limpiando y observa bien!");
+                alert("Clave incorrecta. Observa bien el código y vuelve a intentar.");
             }
         }
     </script>
