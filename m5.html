@@ -1,1 +1,117 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 05 | Compromiso Final | GSM24</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .step-card { display: none; }
+        .active { display: block; }
+        .signature-container {
+            background: #111; border: 1px solid #333;
+            padding: 15px; border-radius: 15px; margin-bottom: 20px;
+        }
+        canvas {
+            width: 100%; height: 100px; background: #fff;
+            border-radius: 5px; margin-top: 10px;
+        }
+        .btn-yes { background: var(--neon-green); color: black; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container" id="pdf-container">
+        <div class="card" id="card-content">
+            <div id="step1" class="step-card active">
+                <div style="border: 2px solid var(--neon-red); padding: 20px; border-radius: 15px;">
+                    <h3>⚠️ ATENCIÓN</h3>
+                    <p>Es obligatorio leer los lineamientos.</p>
+                    <button onclick="window.open('http://www.scout.org.co', '_blank'); irA(2);" class="btn-confirm">LEER DOCUMENTO</button>
+                </div>
+            </div>
+
+            <div id="step2" class="step-card">
+                <h2>EL COMPROMISO</h2>
+                <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
+                <button onclick="irA(3)" class="btn-confirm btn-yes">SÍ, ME COMPROMETO</button>
+            </div>
+
+            <div id="step3" class="step-card">
+                <h2>TU EQUIPO</h2>
+                <input type="number" id="teamSize" placeholder="Cantidad de personas" style="width:100%; padding:15px; border-radius:10px;">
+                <button onclick="generarFormulario()" class="btn-confirm">CONTINUAR</button>
+            </div>
+
+            <div id="step4" class="step-card">
+                <div id="pdf-view">
+                    <h1 style="text-align:center;">ACTA DE COMPROMISO GSM24</h1>
+                    <p style="text-align:center;">Escuela de Formación Carlos Quiroga</p>
+                    <p>Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este rastro con nuestra firma, 
+                    prometiendo lealtad a los principios scouts y la búsqueda constante de la excelencia. 
+                    <br><br><i><b>"Uno para Todos y Todos para Uno"</b></i></p>
+                    <div id="contenedor-firmas"></div>
+                </div>
+                <button id="btn-pdf" onclick="descargarPDF()" class="btn-confirm" style="background:var(--neon-green); color:black; margin-top:20px;">DESCARGAR PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function irA(p) { 
+            document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active'));
+            document.getElementById('step'+p).classList.add('active'); 
+        }
+
+        function generarFormulario() {
+            const num = document.getElementById('teamSize').value;
+            const lista = document.getElementById('contenedor-firmas');
+            lista.innerHTML = "";
+            for (let i = 1; i <= num; i++) {
+                lista.innerHTML += `<div class="signature-container">
+                    <input type="text" id="name-${i}" placeholder="Nombre ${i}" style="width:90%; padding:10px;">
+                    <canvas id="canvas-${i}"></canvas></div>`;
+            }
+            irA(4);
+            setTimeout(() => { for(let i=1; i<=num; i++) initCanvas(i); }, 300);
+        }
+
+        function initCanvas(id) {
+            const c = document.getElementById('canvas-'+id);
+            const ctx = c.getContext('2d');
+            let draw = false;
+            c.addEventListener('mousedown', () => draw=true);
+            c.addEventListener('mouseup', () => draw=false);
+            c.addEventListener('mousemove', (e) => {
+                if(!draw) return;
+                const r = c.getBoundingClientRect();
+                ctx.fillRect(e.clientX - r.left, e.clientY - r.top, 2, 2);
+            });
+        }
+
+        function descargarPDF() {
+            // 1. Congelar los nombres: pasar valor de input a texto fijo
+            const inputs = document.querySelectorAll('.signature-container input');
+            inputs.forEach(input => {
+                const span = document.createElement('p');
+                span.innerHTML = "<b>Nombre:</b> " + input.value;
+                input.parentNode.replaceChild(span, input);
+            });
+
+            // 2. Generar PDF
+            const opt = {
+                margin: 10,
+                filename: 'Acta_Compromiso.pdf',
+                html2canvas: { scale: 2, logging: true },
+                jsPDF: { unit: 'mm', format: 'a4' }
+            };
+            
+            html2pdf().set(opt).from(document.getElementById('pdf-view')).save().then(() => {
+                localStorage.setItem('m5', 'true');
+                location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>
