@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Misión 05 | Compromiso Final | GSM24</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; padding: 15px; box-sizing: border-box; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
@@ -45,23 +45,12 @@
         </div>
 
         <div id="step4" class="step-card">
-            <div id="pdf-view" style="padding: 20px; background: white; color: black; border-radius: 5px;">
-                <h1 style="text-align:center; font-size: 20px; color: black;">ACTA DE COMPROMISO GSM24</h1>
-                <p style="text-align:center; color: black;">Escuela de Formación Carlos Quiroga</p>
-                <p style="line-height:1.6; font-size: 14px; color: black;">
-                    Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
-                    prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario.
-                    <br><br>
-                    <b>"Uno para Todos y Todos para Uno"</b>
-                </p>
-                <div id="lista-nombres-pdf" style="color: black; margin-top: 20px;"></div>
-                <p style="margin-top: 40px; font-size: 12px; font-weight: bold; color: black; text-align: center;">
-                    Una vez descargado, envía el PDF al Jefe de Grupo por WhatsApp.
-                </p>
+            <div class="card-content">
+                <h2>FINALIZAR</h2>
+                <p style="font-size: 0.9rem; color: #888; text-align: center;">Acta lista para descargar.</p>
+                <button onclick="generarPDFDirecto()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR ACTA (PDF)</button>
+                <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
             </div>
-            
-            <button onclick="descargarPDF()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR ACTA (PDF)</button>
-            <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
         </div>
     </div>
 
@@ -73,34 +62,40 @@
 
         function generarFormulario() {
             const num = document.getElementById('teamSize').value;
-            const contenedor = document.getElementById('lista-nombres-pdf');
-            contenedor.innerHTML = "<h3>Integrantes:</h3>";
+            const contenedor = document.createElement('div');
+            contenedor.id = "area-inputs";
             for (let i = 1; i <= num; i++) {
-                // Usamos una clase especial para capturar luego
-                contenedor.innerHTML += `<input type="text" class="input-nombre-dinamico" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000;">`;
+                contenedor.innerHTML += `<input type="text" class="input-nombre-final" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000;">`;
             }
+            document.getElementById('step3').appendChild(contenedor);
             irA(4);
         }
 
-        function descargarPDF() {
-            // 1. Clonar el div del PDF
-            const elemento = document.getElementById('pdf-view').cloneNode(true);
+        function generarPDFDirecto() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
             
-            // 2. Buscar los inputs en la pantalla real para sacarles el valor
-            const inputsReales = document.querySelectorAll('.input-nombre-dinamico');
-            let htmlNombres = "<h3>Integrantes:</h3>";
+            doc.setFontSize(18);
+            doc.text("ACTA DE COMPROMISO GSM24", 105, 20, { align: "center" });
             
-            inputsReales.forEach(input => {
-                const val = input.value || "__________________________";
-                htmlNombres += `<p style="margin: 5px 0; border-bottom: 1px solid #000; color: #000; padding: 5px;">${val}</p>`;
+            doc.setFontSize(12);
+            doc.text("Escuela de Formación Carlos Quiroga", 105, 30, { align: "center" });
+            
+            doc.setFontSize(10);
+            const texto = "Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario. 'Uno para Todos y Todos para Uno'";
+            const splitTexto = doc.splitTextToSize(texto, 180);
+            doc.text(splitTexto, 15, 50);
+
+            doc.text("Integrantes:", 15, 80);
+            
+            let y = 90;
+            const inputs = document.querySelectorAll('.input-nombre-final');
+            inputs.forEach(input => {
+                doc.text("- " + (input.value || "__________________________"), 20, y);
+                y += 10;
             });
             
-            // 3. Inyectar los nombres como texto plano en el clon del PDF
-            elemento.querySelector('#lista-nombres-pdf').innerHTML = htmlNombres;
-
-            // 4. Generar
-            const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
-            html2pdf().set(opt).from(elemento).save();
+            doc.save("Acta_Compromiso_GSM24.pdf");
         }
 
         function finalizarMision() { localStorage.setItem('m5', 'true'); window.location.href = 'index.html'; }
