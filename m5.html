@@ -45,8 +45,10 @@
         </div>
 
         <div id="step4" class="step-card">
-            <div id="pdf-container" style="display:none;"></div> <div class="card-content">
-                <h2>COMPROMISO FINAL</h2>
+            <div class="card-content">
+                <h2>FINALIZAR</h2>
+                <p style="font-size: 0.9rem; color: #888; text-align: center;">Una vez descargado, envía el PDF al Jefe de Grupo por WhatsApp.</p>
+                
                 <button onclick="descargarPDF()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR ACTA (PDF)</button>
                 <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
             </div>
@@ -61,19 +63,17 @@
 
         function generarFormulario() {
             const num = document.getElementById('teamSize').value;
-            const contenedor = document.getElementById('lista-nombres-pdf-input');
-            // Creamos un contenedor específico para los inputs
-            const divInputs = document.createElement('div');
-            divInputs.id = "area-inputs";
+            const contenedor = document.createElement('div');
+            contenedor.id = "area-inputs";
             for (let i = 1; i <= num; i++) {
-                divInputs.innerHTML += `<input type="text" class="nombre-input-real" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000;">`;
+                contenedor.innerHTML += `<input type="text" class="nombre-input-real" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000;">`;
             }
-            document.getElementById('step4').appendChild(divInputs);
+            document.getElementById('step3').appendChild(contenedor);
             irA(4);
         }
 
         function descargarPDF() {
-            // Construimos el HTML desde cero con estilos negros definidos
+            // Genera el PDF SOLO con el acta y los nombres, sin instrucciones extra
             let htmlContenido = `
                 <div style="font-family: sans-serif; padding: 40px; color: #000; background: #fff;">
                     <h1 style="text-align:center; color: #000;">ACTA DE COMPROMISO GSM24</h1>
@@ -93,11 +93,7 @@
                 htmlContenido += `<p style="margin: 10px 0; border-bottom: 1px solid #000; padding: 5px; color: #000;">${nombre}</p>`;
             });
             
-            htmlContenido += `
-                <p style="margin-top: 40px; font-size: 12px; font-weight: bold; color: #000; text-align: center;">
-                    Una vez descargado, envía el PDF al Jefe de Grupo por WhatsApp.
-                </p>
-                </div>`;
+            htmlContenido += `</div>`;
 
             const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
             html2pdf().set(opt).from(htmlContenido).save();
