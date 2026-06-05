@@ -11,7 +11,6 @@
         .step-card { display: none; }
         .active { display: block; }
         .card-content { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        /* Caja corregida: texto negro con fondo blanco para visibilidad */
         .input-name { width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; box-sizing: border-box; font-size: 16px; background: #fff; color: #000; }
         .btn-confirm { width: 100%; padding: 18px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; }
         h2, h3 { color: var(--neon-yellow, #f1c40f); }
@@ -40,7 +39,7 @@
         <div id="step3" class="step-card">
             <div class="card-content">
                 <h2>TU EQUIPO</h2>
-                <input type="number" id="teamSize" placeholder="¿Cuántas personas integran tu equipo?" class="input-name" style="background: #fff; color: #000;">
+                <input type="number" id="teamSize" placeholder="¿Cuántas personas integran tu equipo?" class="input-name">
                 <button onclick="generarFormulario()" class="btn-confirm" style="background:#ffc107; color:black;">CONTINUAR</button>
             </div>
         </div>
@@ -56,8 +55,8 @@
                     <b>"Uno para Todos y Todos para Uno"</b>
                 </p>
                 <div id="lista-nombres-pdf" style="color: black; margin-top: 20px;"></div>
-                <p style="margin-top: 40px; font-size: 13px; font-weight: bold; color: black; text-align: center;">
-                    Una vez descargado, por favor envía el PDF al Jefe de Grupo por WhatsApp.
+                <p style="margin-top: 40px; font-size: 12px; font-weight: bold; color: black; text-align: center;">
+                    Una vez descargado, envía el PDF al Jefe de Grupo por WhatsApp.
                 </p>
             </div>
             
@@ -77,25 +76,24 @@
             const contenedor = document.getElementById('lista-nombres-pdf');
             contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                contenedor.innerHTML += `<input type="text" class="input-name" id="nombre-input-${i}" placeholder="Nombre integrante ${i}" style="border: 1px solid #000; color: #000; display: block; width: 100%; margin: 5px 0;">`;
+                contenedor.innerHTML += `<input type="text" class="nombre-input" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:8px; margin:5px 0; border:1px solid #ccc;">`;
             }
             irA(4);
         }
 
         function descargarPDF() {
-            // Capturar valores actuales de los inputs antes de clonar para el PDF
-            const inputs = document.querySelectorAll('#lista-nombres-pdf input');
+            const inputs = document.querySelectorAll('.nombre-input');
             const listaNombres = document.getElementById('lista-nombres-pdf');
             
-            // Reemplazar inputs por texto visual para el PDF
-            let htmlFinal = "<h3>Integrantes:</h3>";
+            // Creamos un clon temporal para el PDF donde los inputs son texto
+            let htmlNombres = "<h3>Integrantes:</h3>";
             inputs.forEach(input => {
-                const nombre = input.value || "__________________________";
-                htmlFinal += `<p style="margin: 5px 0; border-bottom: 1px solid #000; padding: 5px;">${nombre}</p>`;
+                const valor = input.value || "__________________________";
+                htmlNombres += `<p style="margin: 5px 0; border-bottom: 1px solid #000; padding: 5px; color: #000;">${valor}</p>`;
             });
             
             const elemento = document.getElementById('pdf-view').cloneNode(true);
-            elemento.querySelector('#lista-nombres-pdf').innerHTML = htmlFinal;
+            elemento.querySelector('#lista-nombres-pdf').innerHTML = htmlNombres;
 
             const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
             html2pdf().set(opt).from(elemento).save();
