@@ -6,14 +6,42 @@
     <title>Centro de Mando GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Clase para ocultar el botón completamente */
+        /* Ajustes para el contenedor principal */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Ajuste de las tarjetas para que se vean completas */
+        .mission-card {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 15px;
+            border: 2px solid var(--neon-green); /* Borde verde */
+            border-radius: 10px;
+            background: #111;
+            cursor: pointer;
+            box-sizing: border-box; /* Esto evita que el borde agrande la tarjeta */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-card h3 { margin: 0 0 5px 0; color: #fff; }
+        .mission-card p { margin: 0; color: #888; font-size: 0.9rem; }
+        .status { font-weight: bold; font-size: 0.8rem; margin-top: 8px; display: block; }
+        
+        .completed { border-color: var(--neon-green); background: #0a1a0a; }
+
         .hidden { display: none !important; }
         
-        /* Botón de acceso final ajustado para móvil */
         .btn-final-mision { 
             display: block; 
             width: 100%; 
-            padding: 18px 0; /* Ajustado para mejor control */
+            padding: 18px 0; 
             margin-top: 20px; 
             background: var(--neon-green); 
             color: #000; 
@@ -22,17 +50,8 @@
             text-decoration: none; 
             border-radius: 12px;
             cursor: pointer;
-            box-sizing: border-box; /* Crucial para que el padding no desborde */
+            box-sizing: border-box; 
             font-size: 1rem;
-        }
-
-        /* Asegurar que el contenedor no tenga desbordamientos */
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 10px;
-            box-sizing: border-box;
         }
     </style>
 </head>
@@ -56,7 +75,6 @@
     </div>
 
     <script>
-        // 1. Verificar estado de misiones 1 a 4
         const missions = ['m1', 'm2', 'm3', 'm4'];
         let todasCompletas = true;
 
@@ -66,11 +84,10 @@
                 card.classList.add('completed');
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
             } else {
-                todasCompletas = false; // Si falta una, cambiamos el estado
+                todasCompletas = false;
             }
         });
 
-        // 2. Si todas son true, quitamos la clase .hidden para mostrar el botón
         if(todasCompletas) {
             document.getElementById('btn-mision-final').classList.remove('hidden');
         }
