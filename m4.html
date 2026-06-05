@@ -25,7 +25,7 @@
             background: #222; border: 4px solid var(--neon-yellow);
             color: var(--neon-yellow); font-weight: bold; cursor: pointer;
             transition: 0.1s; font-size: 1.2rem;
-            -webkit-tap-highlight-color: transparent; /* Evita destello azul en móvil */
+            -webkit-tap-highlight-color: transparent;
         }
         .morse-btn:active { background: var(--neon-yellow); color: #000; transform: scale(0.95); }
     </style>
@@ -36,7 +36,10 @@
             <h2 style="color: var(--neon-yellow);">MISIÓN 04: GOBERNANZA</h2>
             
             <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 20px;">
-                La Gobernanza es el ritmo que sostiene nuestra estructura.<br>
+                "Sus muros han visto derrotas y triunfos.<br>
+                Allí se enfrentan guerreros sin espada<br>
+                y campeones sin armadura.<br>
+                Busca el escenario de sus batallas."<br>
                 <b>Transmite la señal de mando correcta.</b>
             </p>
 
@@ -62,7 +65,6 @@
         const targetSignal = ".--..---.."; 
         let signal = "";
         let startTime;
-        let isProcessing = false; // Bloqueo para evitar doble entrada
 
         function start(e) {
             e.preventDefault();
@@ -74,15 +76,13 @@
             if (!startTime) return;
             
             const duration = Date.now() - startTime;
-            startTime = null; // Reset
+            startTime = null;
 
-            // Filtrar toques fantasma (menos de 50ms)
             if (duration < 50) return;
 
             signal += (duration < 300) ? "." : "-";
             display.innerText = signal;
 
-            // Validación
             if (signal === targetSignal) {
                 localStorage.setItem('m4', 'true');
                 status.innerText = "¡SEÑAL TRANSMITIDA!";
