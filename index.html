@@ -51,6 +51,14 @@
             box-sizing: border-box; 
             font-size: 1rem;
         }
+
+        .pista-container {
+            margin-top: 20px;
+            text-align: center;
+            padding: 15px;
+            border: 1px dashed #555;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +73,11 @@
             <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>1. Reencontrémonos como equipo</p><span class="status">PENDIENTE</span></div>
             <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>2. Fortalecer lo básico y urgente</p><span class="status">PENDIENTE</span></div>
             <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>3. Gobernanza, sostenibilidad y cultura de equipo</p><span class="status">PENDIENTE</span></div>
+        </div>
+
+        <div class="pista-container">
+            <p style="color: #aaa; margin-bottom: 10px;">Baloo con su sabiduría te brinda una pista, reclámala con Garra Blanca.</p>
+            <button id="btn-reclamar-pista" onclick="reclamarPista()" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; background: #444; color: #fff; border: none;">Reclamar pista</button>
         </div>
 
         <a href="m5.html" id="btn-mision-final" class="btn-final-mision hidden">ACCEDER A LA MISIÓN FINAL</a>
@@ -88,6 +101,23 @@
 
         if(todasCompletas) {
             document.getElementById('btn-mision-final').classList.remove('hidden');
+        }
+
+        // Lógica de la pista
+        if(localStorage.getItem('pista_reclamada') === 'true') {
+            const btnPista = document.getElementById('btn-reclamar-pista');
+            btnPista.disabled = true;
+            btnPista.innerText = "Pista reclamada";
+            btnPista.style.opacity = "0.5";
+        }
+
+        function reclamarPista() {
+            localStorage.setItem('pista_reclamada', 'true');
+            const btnPista = document.getElementById('btn-reclamar-pista');
+            btnPista.disabled = true;
+            btnPista.innerText = "Pista reclamada";
+            btnPista.style.opacity = "0.5";
+            alert("Pista reclamada. ¡Sigue adelante!");
         }
 
         function reiniciarTablero() { 
