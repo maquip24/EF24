@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Misión 05 | Compromiso Final | GSM24</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; padding: 15px; box-sizing: border-box; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
@@ -22,17 +22,24 @@
         <div id="step1" class="step-card active">
             <div class="card-content" style="border: 2px solid #ff4444; background: rgba(255, 68, 68, 0.05);">
                 <h3 style="color: #ff4444;">⚠️ ATENCIÓN</h3>
-                <p>Es obligatorio ingresar al siguiente enlace en otro celular:</p>
-                <p style="text-align: center; font-weight: bold; color: #fff;">www.scout.org.co</p>
-                <button onclick="irA(2)" class="btn-confirm" style="background:#007bff; color:white;">Presiona acá cuando hayan leído el documento</button>
+                <p>Como adulto del <strong>Grupo Scout Mosqueteros 24</strong>, asumo con alegría el reto de la <strong>Escuela de Formación Carlos Quiroga</strong>, 
+                    no solo como un deber técnico, sino como una oportunidad para volver a encender la razón por la que decidí servir.<br>
+                    Bajo nuestro lema <strong>'Uno para todos y todos para uno'</strong>, me comprometo a participar activamente en cada fase de este proceso, 
+                    aportando mi experiencia y disposición para aprender haciendo.<br>
+                    Entiendo que mi crecimiento personal y mi formación constante son el mejor regalo que puedo ofrecerle a nuestros niños, 
+                    niñas y jóvenes para garantizarles un programa de calidad y un entorno seguro.<br>
+                    <strong><em>Acepto este camino de formación con excelencia y compañerismo, para que juntos fortalezcamos nuestra identidad mosquetera 
+                    y sigamos dejando huella en nuestra comunidad</em></strong>.
+                </p>
+                <button onclick="irA(2)" class="btn-confirm" style="background:#007bff; color:white;">Presiona acá cuando hayan leído y comprendido el texto</button>
             </div>
         </div>
 
         <div id="step2" class="step-card">
             <div class="card-content">
                 <h2>EL COMPROMISO</h2>
-                <p>¿Te comprometes a cumplir esta misión permanente en tu vida scout?</p>
-                <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, ME COMPROMETO</button>
+                <p>¿Se comprometen a cumplir esta misión con los integrantes de tu Grupo?</p>
+                <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, NOS COMPROMETEMOS</button>
             </div>
         </div>
 
@@ -45,23 +52,13 @@
         </div>
 
         <div id="step4" class="step-card">
-            <div id="pdf-view" style="padding: 20px; background: white; color: black; border-radius: 5px;">
-                <h1 style="text-align:center; font-size: 20px; color: black;">ACTA DE COMPROMISO GSM24</h1>
-                <p style="text-align:center; color: black;">Escuela de Formación Carlos Quiroga</p>
-                <p style="line-height:1.6; font-size: 14px; color: black;">
-                    Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
-                    prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario.
-                    <br><br>
-                    <b>"Uno para Todos y Todos para Uno"</b>
-                </p>
-                <div id="lista-nombres-pdf" style="color: black; margin-top: 20px;"></div>
-                <p style="margin-top: 40px; font-size: 12px; font-weight: bold; color: black; text-align: center;">
-                    Una vez descargado, envía el PDF al Jefe de Grupo por WhatsApp.
-                </p>
+            <div class="card-content">
+                <h2>FINALIZAR</h2>
+                <p><strong>Descarga el archivo y envíalo a la Jefe de Grupo por WhatsApp</strong></p>
+                <div id="area-inputs-container"></div>
+                <button onclick="descargarPDF()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR COMPROMISO</button>
+                <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
             </div>
-            
-            <button onclick="descargarPDF()" class="btn-confirm" style="background:#28a745; color:white;">DESCARGAR ACTA (PDF)</button>
-            <button onclick="finalizarMision()" class="btn-confirm" style="background:#007bff; color:white;">FINALIZAR Y VOLVER</button>
         </div>
     </div>
 
@@ -73,39 +70,45 @@
 
         function generarFormulario() {
             const num = document.getElementById('teamSize').value;
-            const contenedor = document.getElementById('lista-nombres-pdf');
+            const contenedor = document.getElementById('area-inputs-container');
             contenedor.innerHTML = "<h3>Integrantes:</h3>";
             for (let i = 1; i <= num; i++) {
-                contenedor.innerHTML += `<input type="text" class="nombre-input-real" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000;">`;
+                contenedor.innerHTML += `<input type="text" class="input-nombre-final" placeholder="Nombre integrante ${i}" style="display:block; width:90%; padding:10px; margin:5px auto; border:1px solid #ccc; color:#000; background:#fff;">`;
             }
             irA(4);
         }
 
         function descargarPDF() {
-            // Genera el PDF con los valores actuales de los inputs
-            let htmlContenido = `
-                <div style="font-family: sans-serif; padding: 40px; color: #000; background: #fff;">
-                    <h1 style="text-align:center; color: #000;">ACTA DE COMPROMISO GSM24</h1>
-                    <p style="text-align:center; color: #000;">Escuela de Formación Carlos Quiroga</p>
-                    <p style="line-height:1.6; color: #000;">
-                        Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, 
-                        prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario.
-                        <br><br>
-                        <b>"Uno para Todos y Todos para Uno"</b>
-                    </p>
-                    <h3 style="color: #000;">Integrantes:</h3>
-            `;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
             
-            const inputs = document.querySelectorAll('.nombre-input-real');
-            inputs.forEach(input => {
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.text("ACTA DE COMPROMISO GSM24", 105, 20, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text("Escuela de Formación Carlos Quiroga", 105, 30, { align: "center" });
+            
+            doc.setFontSize(11);
+            const texto = "Como adulto del Grupo Scout Mosqueteros 24, asumo con alegría el reto de la Escuela de Formación Carlos Quiroga, no solo como un deber técnico, sino como una oportunidad para volver a encender la razón por la que decidí servir. Bajo nuestro lema 'Uno para todos y todos para uno', me comprometo a participar activamente en cada fase de este proceso, aportando mi experiencia y disposición para aprender haciendo. Entiendo que mi crecimiento personal y mi formación constante son el mejor regalo que puedo ofrecerle a nuestros niños, niñas y jóvenes para garantizarles un programa de calidad y un entorno seguro. Acepto este camino de formación con excelencia y compañerismo, para que juntos fortalezcamos nuestra identidad mosquetera y sigamos dejando huella en nuestra comunidad.";
+            
+            const splitTexto = doc.splitTextToSize(texto, 170);
+            doc.text(splitTexto, 20, 50);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Integrantes:", 20, 110);
+            
+            doc.setFont("helvetica", "normal");
+            let y = 120;
+            const inputs = document.querySelectorAll('.input-nombre-final');
+            inputs.forEach((input, index) => {
                 const nombre = input.value || "__________________________";
-                htmlContenido += `<p style="margin: 10px 0; border-bottom: 1px solid #000; padding: 5px; color: #000;">${nombre}</p>`;
+                doc.text((index + 1) + ". " + nombre, 20, y);
+                y += 10;
             });
             
-            htmlContenido += `</div>`;
-
-            const opt = { margin: 15, filename: 'Acta_Compromiso_GSM24.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
-            html2pdf().set(opt).from(htmlContenido).save();
+            doc.save("Acta_Compromiso_GSM24.pdf");
         }
 
         function finalizarMision() { localStorage.setItem('m5', 'true'); window.location.href = 'index.html'; }
