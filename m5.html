@@ -39,8 +39,8 @@
         <div id="step2" class="step-card">
             <div class="card-content">
                 <h2>EL COMPROMISO</h2>
-                <p>¿Te comprometes a cumplir esta misión con los integrantes de tu Grupo?</p>
-                <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, ME COMPROMETO</button>
+                <p>¿Se comprometes a cumplir esta misión con los integrantes de tu Grupo?</p>
+                <button onclick="irA(3)" class="btn-confirm" style="background:#28a745; color:white;">SÍ, NOS COMPROMETEMOS</button>
             </div>
         </div>
 
@@ -92,7 +92,14 @@
             doc.text("Escuela de Formación Carlos Quiroga", 105, 30, { align: "center" });
             
             doc.setFontSize(11);
-            const texto = "Como miembros de la Escuela de Formación Carlos Quiroga, sellamos este compromiso con nuestros nombres, prometiendo participar de los encuentros, talleres y cursos que me permitan avanzar en mi función como adulto voluntario.\n\n\"Uno para Todos y Todos para Uno\"";
+            const texto = "<p>"Como adulto del Grupo Scout Mosqueteros 24, asumo con alegría el reto de la Escuela de Formación Carlos Quiroga, 
+                    no solo como un deber técnico, sino como una oportunidad para volver a encender la razón por la que decidí servir.<br>
+                    Bajo nuestro lema 'Uno para todos y todos para uno', me comprometo a participar activamente en cada fase de este proceso, 
+                    aportando mi experiencia y disposición para aprender haciendo.<br>
+                    Entiendo que mi crecimiento personal y mi formación constante son el mejor regalo que puedo ofrecerle a nuestros niños, 
+                    niñas y jóvenes para garantizarles un programa de calidad y un entorno seguro.<br>
+                    Acepto este camino de formación con excelencia y compañerismo, para que juntos fortalezcamos nuestra identidad mosquetera 
+                    y sigamos dejando huella en nuestra comunidad-<br>\"";
             const splitTexto = doc.splitTextToSize(texto, 170);
             doc.text(splitTexto, 20, 50);
 
