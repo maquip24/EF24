@@ -6,66 +6,26 @@
     <title>Centro de Mando GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .mission-card {
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 15px;
-            border: 2px solid var(--neon-green);
-            border-radius: 10px;
-            background: #111;
-            cursor: pointer;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
+        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 10px; box-sizing: border-box; }
+        /* Estilo del cronómetro */
+        #cronometro { font-size: 2rem; font-weight: bold; text-align: center; margin: 15px 0; color: #fff; }
+        .danger { color: red !important; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        
+        .mission-card { width: 100%; margin-bottom: 12px; padding: 15px; border: 2px solid var(--neon-green); border-radius: 10px; background: #111; cursor: pointer; display: flex; flex-direction: column; }
         .mission-card h3 { margin: 0 0 5px 0; color: #fff; }
-        .mission-card p { margin: 0; color: #888; font-size: 0.9rem; }
-        .status { font-weight: bold; font-size: 0.8rem; margin-top: 8px; display: block; }
-        
+        .status { font-weight: bold; font-size: 0.8rem; margin-top: 8px; }
         .completed { border-color: var(--neon-green); background: #0a1a0a; }
-
         .hidden { display: none !important; }
-        
-        .btn-final-mision { 
-            display: block; 
-            width: 100%; 
-            padding: 18px 0; 
-            margin-top: 20px; 
-            background: var(--neon-green); 
-            color: #000; 
-            font-weight: bold; 
-            text-align: center; 
-            text-decoration: none; 
-            border-radius: 12px;
-            cursor: pointer;
-            box-sizing: border-box; 
-            font-size: 1rem;
-        }
-
-        .pista-container {
-            margin-top: 20px;
-            text-align: center;
-            padding: 15px;
-            border: 1px dashed #555;
-            border-radius: 10px;
-        }
+        .btn-final-mision { display: block; width: 100%; padding: 18px 0; margin-top: 20px; background: var(--neon-green); color: #000; font-weight: bold; text-align: center; border-radius: 12px; cursor: pointer; font-size: 1rem; }
+        .pista-container { margin-top: 20px; text-align: center; padding: 15px; border: 1px dashed #555; border-radius: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header style="text-align: center; margin-bottom: 30px;">
+        <header style="text-align: center;">
             <h1>CENTRO DE MANDO GSM24</h1>
-            <p>Escuela de Formación Carlos Quiroga</p>
+            <div id="cronometro">40:00</div>
         </header>
 
         <div class="grid-single">
@@ -86,45 +46,54 @@
     </div>
 
     <script>
+        // Lógica del Cronómetro
+        function iniciarCronometro() {
+            let tiempoLimite = localStorage.getItem('tiempo_fin');
+            if (!tiempoLimite) {
+                tiempoLimite = Date.now() + (40 * 60 * 1000);
+                localStorage.setItem('tiempo_fin', tiempoLimite);
+            }
+
+            const x = setInterval(() => {
+                let ahora = Date.now();
+                let distancia = tiempoLimite - ahora;
+
+                let minutes = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                document.getElementById("cronometro").innerText = 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+
+                if (distancia < (10 * 60 * 1000)) document.getElementById("cronometro").classList.add("danger");
+                if (distancia < 0) {
+                    clearInterval(x);
+                    document.getElementById("cronometro").innerText = "TIEMPO AGOTADO";
+                }
+            }, 1000);
+        }
+        iniciarCronometro();
+
+        // Lógica original de misiones
         const missions = ['m1', 'm2', 'm3', 'm4'];
         let todasCompletas = true;
-
         missions.forEach(m => {
             const card = document.getElementById('card-' + m);
             if(localStorage.getItem(m) === 'true') {
                 card.classList.add('completed');
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
-            } else {
-                todasCompletas = false;
-            }
+            } else { todasCompletas = false; }
         });
-
-        if(todasCompletas) {
-            document.getElementById('btn-mision-final').classList.remove('hidden');
-        }
-
-        // Lógica de la pista
-        if(localStorage.getItem('pista_reclamada') === 'true') {
-            const btnPista = document.getElementById('btn-reclamar-pista');
-            btnPista.disabled = true;
-            btnPista.innerText = "Pista reclamada";
-            btnPista.style.opacity = "0.5";
-        }
+        if(todasCompletas) document.getElementById('btn-mision-final').classList.remove('hidden');
 
         function reclamarPista() {
             localStorage.setItem('pista_reclamada', 'true');
-            const btnPista = document.getElementById('btn-reclamar-pista');
-            btnPista.disabled = true;
-            btnPista.innerText = "Pista reclamada";
-            btnPista.style.opacity = "0.5";
-            alert("Pista reclamada. ¡Sigue adelante!");
+            const btn = document.getElementById('btn-reclamar-pista');
+            btn.disabled = true; btn.innerText = "Pista reclamada"; btn.style.opacity = "0.5";
         }
-
+        
         function reiniciarTablero() { 
-            if(confirm("¿Estás seguro de reiniciar todo el progreso?")) { 
-                localStorage.clear(); 
-                location.reload(); 
-            } 
+            if(confirm("¿Reiniciar todo?")) { localStorage.clear(); location.reload(); } 
         }
     </script>
 </body>
