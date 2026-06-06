@@ -6,14 +6,40 @@
     <title>Centro de Mando GSM24</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Clase para ocultar el botón completamente */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .mission-card {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 15px;
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            background: #111;
+            cursor: pointer;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-card h3 { margin: 0 0 5px 0; color: #fff; }
+        .mission-card p { margin: 0; color: #888; font-size: 0.9rem; }
+        .status { font-weight: bold; font-size: 0.8rem; margin-top: 8px; display: block; }
+        
+        .completed { border-color: var(--neon-green); background: #0a1a0a; }
+
         .hidden { display: none !important; }
         
-        /* Botón de acceso final (se verá igual a tus otras tarjetas o botones según tu estilo) */
         .btn-final-mision { 
             display: block; 
             width: 100%; 
-            padding: 20px; 
+            padding: 18px 0; 
             margin-top: 20px; 
             background: var(--neon-green); 
             color: #000; 
@@ -22,6 +48,8 @@
             text-decoration: none; 
             border-radius: 12px;
             cursor: pointer;
+            box-sizing: border-box; 
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -33,10 +61,10 @@
         </header>
 
         <div class="grid-single">
-            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'"><h3>MISIÓN 1</h3><p>El porqué de la escuela</p><span class="status">PENDIENTE</span></div>
-            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>Fase 1</p><span class="status">PENDIENTE</span></div>
-            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>Fase 2</p><span class="status">PENDIENTE</span></div>
-            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>Fase 3</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m1" onclick="location.href='m1.html'"><h3>MISIÓN 1</h3><p>Escuela de Formación</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>1. Reencontrémonos como equipo</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>2. Fortalecer lo básico y urgente</p><span class="status">PENDIENTE</span></div>
+            <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>3. Gobernanza, sostenibilidad y cultura de equipo</p><span class="status">PENDIENTE</span></div>
         </div>
 
         <a href="m5.html" id="btn-mision-final" class="btn-final-mision hidden">ACCEDER A LA MISIÓN FINAL</a>
@@ -45,7 +73,6 @@
     </div>
 
     <script>
-        // 1. Verificar estado de misiones 1 a 4
         const missions = ['m1', 'm2', 'm3', 'm4'];
         let todasCompletas = true;
 
@@ -55,11 +82,10 @@
                 card.classList.add('completed');
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
             } else {
-                todasCompletas = false; // Si falta una, cambiamos el estado
+                todasCompletas = false;
             }
         });
 
-        // 2. Si todas son true, quitamos la clase .hidden para mostrar el botón
         if(todasCompletas) {
             document.getElementById('btn-mision-final').classList.remove('hidden');
         }
