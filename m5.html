@@ -78,37 +78,48 @@
             irA(4);
         }
 
-        function descargarPDF() {
+        async function descargarPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(18);
-            doc.text("ACTA DE COMPROMISO GSM24", 105, 20, { align: "center" });
-            
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            doc.text("Escuela de Formación Carlos Quiroga", 105, 30, { align: "center" });
-            
-            doc.setFontSize(11);
-            const texto = "Como adulto del Grupo Scout Mosqueteros 24, asumo con alegría el reto de la Escuela de Formación Carlos Quiroga, no solo como un deber técnico, sino como una oportunidad para volver a encender la razón por la que decidí servir. Bajo nuestro lema 'Uno para todos y todos para uno', me comprometo a participar activamente en cada fase de este proceso, aportando mi experiencia y disposición para aprender haciendo. Entiendo que mi crecimiento personal y mi formación constante son el mejor regalo que puedo ofrecerle a nuestros niños, niñas y jóvenes para garantizarles un programa de calidad y un entorno seguro. Acepto este camino de formación con excelencia y compañerismo, para que juntos fortalezcamos nuestra identidad mosquetera y sigamos dejando huella en nuestra comunidad.";
-            
-            const splitTexto = doc.splitTextToSize(texto, 170);
-            doc.text(splitTexto, 20, 50);
+            // Cargar imagen
+            const imgUrl = 'https://lh3.googleusercontent.com/d/1gszq7EM3VUPrlGRpvUBjEIJ5GGNeXBKM'; 
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = imgUrl;
 
-            doc.setFont("helvetica", "bold");
-            doc.text("Integrantes:", 20, 110);
-            
-            doc.setFont("helvetica", "normal");
-            let y = 120;
-            const inputs = document.querySelectorAll('.input-nombre-final');
-            inputs.forEach((input, index) => {
-                const nombre = input.value || "__________________________";
-                doc.text((index + 1) + ". " + nombre, 20, y);
-                y += 10;
-            });
-            
-            doc.save("Acta_Compromiso_GSM24.pdf");
+            img.onload = async function() {
+                // Agregar logo centrado
+                doc.addImage(img, 'PNG', 85, 10, 40, 40);
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(18);
+                doc.text("ACTA DE COMPROMISO GSM24", 105, 60, { align: "center" });
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.text("Escuela de Formación Carlos Quiroga", 105, 70, { align: "center" });
+                
+                doc.setFontSize(11);
+                const texto = "Como adulto del Grupo Scout Mosqueteros 24, asumo con alegría el reto de la Escuela de Formación Carlos Quiroga, no solo como un deber técnico, sino como una oportunidad para volver a encender la razón por la que decidí servir. Bajo nuestro lema 'Uno para todos y todos para uno', me comprometo a participar activamente en cada fase de este proceso, aportando mi experiencia y disposición para aprender haciendo. Entiendo que mi crecimiento personal y mi formación constante son el mejor regalo que puedo ofrecerle a nuestros niños, niñas y jóvenes para garantizarles un programa de calidad y un entorno seguro. Acepto este camino de formación con excelencia y compañerismo, para que juntos fortalezcamos nuestra identidad mosquetera y sigamos dejando huella en nuestra comunidad.";
+                
+                const splitTexto = doc.splitTextToSize(texto, 170);
+                doc.text(splitTexto, 20, 90);
+
+                doc.setFont("helvetica", "bold");
+                doc.text("Integrantes:", 20, 150);
+                
+                doc.setFont("helvetica", "normal");
+                let y = 160;
+                const inputs = document.querySelectorAll('.input-nombre-final');
+                inputs.forEach((input, index) => {
+                    const nombre = input.value || "__________________________";
+                    doc.text((index + 1) + ". " + nombre, 20, y);
+                    y += 10;
+                });
+                
+                doc.save("Acta_Compromiso_GSM24.pdf");
+            };
         }
 
         function finalizarMision() { localStorage.setItem('m5', 'true'); window.location.href = 'index.html'; }
