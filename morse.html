@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Traductor Morse GSM24</title>
+    <style>
+        body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: #222; padding: 20px; border-radius: 10px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; font-size: 16px; border-radius: 5px; box-sizing: border-box; }
+        select { padding: 10px; width: 100%; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Traductor Morse GSM24</h3>
+        
+        <select id="modo">
+            <option value="textoToMorse">Texto → Morse</option>
+            <option value="morseToTexto">Morse → Texto</option>
+        </select>
+
+        <textarea id="entrada" placeholder="Escribe aquí... (usa espacios para separar letras morse)"></textarea>
+        <textarea id="salida" placeholder="Resultado..." readonly></textarea>
+    </div>
+
+    <script>
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 
+            'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'Ñ': '--.--', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 
+            'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..',
+            '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----'
+        };
+
+        const entrada = document.getElementById('entrada');
+        const salida = document.getElementById('salida');
+        const modo = document.getElementById('modo');
+
+        function traducir() {
+            let texto = entrada.value.toUpperCase();
+            let resultado = "";
+
+            if (modo.value === "textoToMorse") {
+                for (let char of texto) {
+                    if (morseCode[char]) resultado += morseCode[char] + " ";
+                    else if (char === " ") resultado += "/ "; // Espacio entre palabras
+                }
+            } else {
+                let palabras = texto.split(' / ');
+                palabras.forEach(palabra => {
+                    let letras = palabra.split(' ');
+                    letras.forEach(codigo => {
+                        for (let letra in morseCode) {
+                            if (morseCode[letra] === codigo) resultado += letra;
+                        }
+                    });
+                    resultado += " ";
+                });
+            }
+            salida.value = resultado.trim();
+        }
+
+        entrada.addEventListener('input', traducir);
+        modo.addEventListener('change', traducir);
+    </script>
+</body>
+</html>
