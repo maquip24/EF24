@@ -1,29 +1,53 @@
-<script>
-    // Cadena exacta según image_f15d68.png
-    const normal = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-    const bosque = "BOSQUEACDFGHIJKLMÑPRTVWXYZ"; 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Traductor GSM24 - Código BOSQUE</title>
+    <style>
+        body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: #222; padding: 20px; border-radius: 10px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; font-size: 18px; border-radius: 5px; }
+        select { padding: 10px; width: 100%; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Traductor GSM24 (Según image_f15d68.png)</h3>
+        <select id="modo">
+            <option value="cifrar">NORMAL → CÓDIGO</option>
+            <option value="descifrar">CÓDIGO → NORMAL</option>
+        </select>
+        <textarea id="entrada" placeholder="Escribe aquí..."></textarea>
+        <textarea id="salida" placeholder="Resultado..." readonly></textarea>
+    </div>
 
-    const entrada = document.getElementById('entrada');
-    const salida = document.getElementById('salida');
-    const modo = document.getElementById('modo');
+    <script>
+        // Mapeo exacto según image_f15d68.png
+        const normal = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+        const codigo = "BOSQUEACDFGHIJKLMÑPRTVWXYZ";
 
-    function traducir() {
-        let texto = entrada.value.toUpperCase();
-        let resultado = "";
+        const entrada = document.getElementById('entrada');
+        const salida = document.getElementById('salida');
+        const modo = document.getElementById('modo');
 
-        for (let char of texto) {
-            if (modo.value === "cifrar") {
-                let index = normal.indexOf(char);
-                // Si la letra existe, usamos el alfabeto código; si no (ej. espacio), dejamos la letra igual
-                resultado += (index !== -1) ? bosque[index] : char;
-            } else {
-                let index = bosque.indexOf(char);
-                resultado += (index !== -1) ? normal[index] : char;
+        function traducir() {
+            let texto = entrada.value.toUpperCase();
+            let resultado = "";
+
+            for (let char of texto) {
+                if (modo.value === "cifrar") {
+                    let index = normal.indexOf(char);
+                    resultado += (index !== -1) ? codigo[index] : char;
+                } else {
+                    let index = codigo.indexOf(char);
+                    resultado += (index !== -1) ? normal[index] : char;
+                }
             }
+            salida.value = resultado;
         }
-        salida.value = resultado;
-    }
 
-    entrada.addEventListener('input', traducir);
-    modo.addEventListener('change', traducir);
-</script>
+        entrada.addEventListener('input', traducir);
+        modo.addEventListener('change', traducir);
+    </script>
+</body>
+</html>
