@@ -1,131 +1,261 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Centro de Mando GSM24</title>
+
     <link rel="stylesheet" href="style.css">
+
     <style>
+
         .container {
+
             width: 100%;
+
             max-width: 600px;
+
             margin: 0 auto;
+
             padding: 10px;
+
             box-sizing: border-box;
+
         }
+
+
 
         .mission-card {
+
             width: 100%;
+
             margin-bottom: 12px;
+
             padding: 15px;
+
             border: 2px solid var(--neon-green);
+
             border-radius: 10px;
+
             background: #111;
+
             cursor: pointer;
+
             box-sizing: border-box;
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
+
         }
+
+
 
         .mission-card h3 { margin: 0 0 5px 0; color: #fff; }
+
         .mission-card p { margin: 0; color: #888; font-size: 0.9rem; }
+
         .status { font-weight: bold; font-size: 0.8rem; margin-top: 8px; display: block; }
+
         
+
         .completed { border-color: var(--neon-green); background: #0a1a0a; }
 
+
+
         .hidden { display: none !important; }
+
         
+
         .btn-final-mision { 
+
             display: block; 
+
             width: 100%; 
+
             padding: 18px 0; 
+
             margin-top: 20px; 
+
             background: var(--neon-green); 
+
             color: #000; 
+
             font-weight: bold; 
+
             text-align: center; 
+
             text-decoration: none; 
+
             border-radius: 12px;
+
             cursor: pointer;
+
             box-sizing: border-box; 
+
             font-size: 1rem;
+
         }
+
+
 
         .pista-container {
+
             margin-top: 20px;
+
             text-align: center;
+
             padding: 15px;
+
             border: 1px dashed #555;
+
             border-radius: 10px;
+
         }
+
     </style>
+
 </head>
+
 <body>
+
     <div class="container">
+
         <header style="text-align: center; margin-bottom: 30px;">
+
             <h1>CENTRO DE MANDO GSM24</h1>
+
             <p>Escuela de Formación Carlos Quiroga</p>
+
         </header>
 
+
+
         <div class="grid-single">
+
             <div class="mission-card" id="card-m1" onclick="location.href='m1.html'"><h3>MISIÓN 1</h3><p>Escuela de Formación</p><span class="status">PENDIENTE</span></div>
+
             <div class="mission-card" id="card-m2" onclick="location.href='m2.html'"><h3>MISIÓN 2</h3><p>1. Reencontrémonos como equipo</p><span class="status">PENDIENTE</span></div>
+
             <div class="mission-card" id="card-m3" onclick="location.href='m3.html'"><h3>MISIÓN 3</h3><p>2. Fortalecer lo básico y urgente</p><span class="status">PENDIENTE</span></div>
+
             <div class="mission-card" id="card-m4" onclick="location.href='m4.html'"><h3>MISIÓN 4</h3><p>3. Gobernanza, sostenibilidad y cultura de equipo</p><span class="status">PENDIENTE</span></div>
+
         </div>
+
+
 
         <div class="pista-container">
+
             <p style="color: yellow; margin-bottom: 10px;">Baloo con su sabiduría te brinda una pista, reclámala con Garra Blanca.</p>
+
             <button id="btn-reclamar-pista" onclick="reclamarPista()" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; background: #444; color: #fff; border: none;">Reclamar pista</button>
+
         </div>
 
+
+
         <a href="m5.html" id="btn-mision-final" class="btn-final-mision hidden">ACCEDER A LA MISIÓN FINAL</a>
+
         
+
         <button onclick="reiniciarTablero()" style="width:100%; padding:15px; margin-top:20px; background:transparent; border:1px solid #444; color:#666; border-radius:8px;">REINICIAR TABLERO</button>
+
     </div>
 
+
+
     <script>
+
         const missions = ['m1', 'm2', 'm3', 'm4'];
+
         let todasCompletas = true;
 
+
+
         missions.forEach(m => {
+
             const card = document.getElementById('card-' + m);
+
             if(localStorage.getItem(m) === 'true') {
+
                 card.classList.add('completed');
+
                 card.querySelector('.status').innerText = 'COMPLETADO ✓';
+
             } else {
+
                 todasCompletas = false;
+
             }
+
         });
 
+
+
         if(todasCompletas) {
+
             document.getElementById('btn-mision-final').classList.remove('hidden');
+
         }
+
+
 
         // Lógica de la pista
+
         if(localStorage.getItem('pista_reclamada') === 'true') {
+
             const btnPista = document.getElementById('btn-reclamar-pista');
+
             btnPista.disabled = true;
+
             btnPista.innerText = "Pista reclamada";
+
             btnPista.style.opacity = "0.5";
+
         }
+
+
 
         function reclamarPista() {
+
             localStorage.setItem('pista_reclamada', 'true');
+
             const btnPista = document.getElementById('btn-reclamar-pista');
+
             btnPista.disabled = true;
+
             btnPista.innerText = "Pista reclamada";
+
             btnPista.style.opacity = "0.5";
+
             alert("Pista reclamada. ¡Sigue adelante!");
+
         }
 
+
+
         function reiniciarTablero() { 
+
             if(confirm("¿Estás seguro de reiniciar todo el progreso?")) { 
+
                 localStorage.clear(); 
+
                 location.reload(); 
+
             } 
+
         }
+
     </script>
+
 </body>
+
 </html>
