@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 03 | Rastreo | GSM24</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+            .texto-narrativo {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 3px solid var(--neon-green);
+            background: rgba(57, 255, 20, 0.15);
+            text-align: left;
+        }
+        .canvas-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border: 4px solid #333;
+            border-radius: 15px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #pista-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        #codigo-oculto {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--neon-green);
+            text-align: center;
+            padding: 10px;
+        }
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #111;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        .btn-action {
+            width: 100%;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card m3-theme">
+            <h2 style="color: var(--neon-green);">MISIÓN 03</h2>
+
+            <div class="texto-narrativo">
+                <strong>Fase 2: Fortalecer lo básico y urgente</strong><br>
+                Objetivo: Fortalecer competencias técnicas y metodológicas prioritarias para el funcionamiento seguro y educativo del grupo.<br>
+            </div>
+            
+            <p>
+                Llega a ese lugar:<br>
+                "__________ cruza el Ande<br>
+                Que riega dos océanos;<br>
+                Espadas cual centellas<br>
+                Fulguran en Junín"<br><br>
+            </p>
+            <p style="font-style: italic; color: var(--neon-green);">Para desarrollar la misión necesitas una palabra clave, para descubrirla mira esta ayuda:<br>
+                <b><strong>el scout es LIMPIO en pensamiento, palabra y obra.</strong></b></p>
+
+            <input type="text" id="respuesta" class="input-box" placeholder="Escribe la clave...">
+            
+            <button onclick="validarRespuesta()" class="btn-action" style="background: var(--neon-green); color: black;">
+                VALIDAR RESPUESTA
+            </button>
+
+            <button onclick="location.href='index.html'" class="btn-action" style="background: transparent; border: 1px solid #444; color: #666;">
+                REGRESAR AL CENTRO
+            </button>
+
+            <div class="canvas-container">
+                <div id="codigo-oculto">B <BR> O <BR> S <BR> Q <BR> U <BR> E</div>
+                <canvas id="pista-canvas" width="300" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pista-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Dibujar niebla inicial
+        ctx.fillStyle = '#333';
+        ctx.fillRect(0, 0, 300, 300);
+
+        function limpiar(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            ctx.clearRect(x - 30, y - 30, 60, 60);
+        }
+
+        canvas.addEventListener('mousemove', limpiar);
+        canvas.addEventListener('touchmove', limpiar);
+
+        function validarRespuesta() {
+            const resp = document.getElementById('respuesta').value.toLowerCase();
+            if(resp === "esencial") {
+                localStorage.setItem('m3', 'true');
+                alert("¡Clave correcta! Misión cumplida.");
+                window.location.href = 'index.html';
+            } else {
+                alert("Clave incorrecta. Inténtalo de nuevo.");
+            }
+        }
+    </script>
+</body>
+</html>
