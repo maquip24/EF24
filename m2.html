@@ -24,7 +24,7 @@
         }
         #aguja {
             width: 10px; height: 140px;
-            /* Colores invertidos: Blanco arriba, Rojo abajo */
+            /* Blanco arriba, Rojo abajo */
             background: linear-gradient(to bottom, #fff 50%, var(--neon-red) 50%);
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
             transition: transform 0.05s ease-out;
@@ -87,7 +87,11 @@
     <script>
         const aguja = document.getElementById('aguja');
         const displayGrados = document.getElementById('display-grados');
-        const rumbos = [145, 75, 300, 215, 23];
+        const rumbos = [
+            { grado: 135, pasos: 10 },
+            { grado: 90, pasos: 10 },
+            { grado: 160, pasos: 20 }
+        ];
         let completados = 0;
 
         window.addEventListener("deviceorientation", (event) => {
@@ -99,10 +103,13 @@
         });
 
         const container = document.getElementById('lista-rumbos');
-        rumbos.forEach((g, index) => {
+        rumbos.forEach((item, index) => {
             container.innerHTML += `
                 <div class="rumbo-card">
-                    <span class="grados-val">Rumbo: ${g}°</span>
+                    <div>
+                        <span class="grados-val">Rumbo: ${item.grado}°</span>
+                        <p style="font-size: 0.8rem; margin: 0; color: #888;">${item.pasos} pasos al frente</p>
+                    </div>
                     <button class="check-btn" onclick="marcar(this, ${index})" id="btn-${index}">✓</button>
                 </div>`;
         });
